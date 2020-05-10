@@ -20,6 +20,12 @@
  */
 
 
+const _FOREST = 1;
+const _MOUNTAIN = 2;
+const _STEPPE = 3;
+const _GRASSLAND = 4;
+
+
 /*
  * land_types:
  *
@@ -100,28 +106,28 @@ $this->seasons = array(
  */
 $this->territories = array(
     1 => array(
-        "land_type" => 3,
+        "land_type" => _STEPPE,
         "neighbor" => array(2, 3, 4),
         "region" => 1,
         "x" => 50,
         "y" => 50,
     ),
     2 => array(
-        "land_type" => 2,
+        "land_type" => _MOUNTAIN,
         "neighbor" => array(3, 5, 6),
         "region" => 1,
         "x" => 202,
         "y" => 42,
     ),
     3 => array(
-        "land_type" => 4,
+        "land_type" => _GRASSLAND,
         "neighbor" => array(4, 5),
         "region" => 1,
         "x" => 117,
         "y" => 102,
     ),
     5 => array(
-        "land_type" => 1,
+        "land_type" => _FOREST,
         "neighbor" => array(6, 29, 32),
         "region" => 1,
         "x" => 174,
@@ -129,35 +135,35 @@ $this->territories = array(
     ),
 
     6 => array(
-        "land_type" => 4,
+        "land_type" => _GRASSLAND,
         "neighbor" => array(7, 10, 29),
         "region" => 2,
         "x" => 305,
         "y" => 81,
     ),
     7 => array(
-        "land_type" => 3,
+        "land_type" => _STEPPE,
         "neighbor" => array(8, 10),
         "region" => 2,
         "x" => 441,
         "y" => 52,
     ),
     8 => array(
-        "land_type" => 4,
+        "land_type" => _GRASSLAND,
         "neighbor" => array(9, 10),
         "region" => 2,
         "x" => 576,
         "y" => 49,
     ),
     9 => array(
-        "land_type" => 2,
+        "land_type" => _MOUNTAIN,
         "neighbor" => array(10, 11, 14, 22),
         "region" => 1,
         "x" => 700,
         "y" => 84,
     ),
     10 => array(
-        "land_type" => 1,
+        "land_type" => _FOREST,
         "neighbor" => array(24, 27),
         "region" => 2,
         "x" => 495,
