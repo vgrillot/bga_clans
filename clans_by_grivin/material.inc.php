@@ -21,9 +21,38 @@
 
 
 /*
+ * colors code
+ * (RVB)
+ */
+$this->colors = array(
+    1 => array(
+        "name" => "yellow",
+        "color" => "00FFFF",
+    ),
+    2 => array(
+        "name" => "red",
+        "color" => "FF0000",
+    ),
+    3 => array(
+        "name" => "green",
+        "color" => "00FF00",
+    ),
+    4 => array(
+        "name" => "blue",
+        "color" => "0000FF",
+    ),
+    5 => array(
+        "name" => "black",
+        "color" => "000000",
+    ),
+);
+
+
+/*
  * land_types:
  *
  */
+
 
 $this->land_types = array(
     0 => array(

@@ -1,4 +1,3 @@
-
 -- ------
 -- BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
 -- ClansByGrivin implementation : © <Your name here> <Your email address here>
@@ -32,4 +31,36 @@
 
 -- Example 2: add a custom field to the standard "player" table
 -- ALTER TABLE `player` ADD `player_my_custom_field` INT UNSIGNED NOT NULL DEFAULT '0';
+
+
+--
+--  Store hidden color played
+--
+--  secret_color : the color assigned to the player (yellow, green, ...)
+--
+ALTER TABLE player
+    ADD player_secret_color SMALLINT NULL;
+
+--
+-- TERRITORIES
+-- might be calculated...
+--
+-- CREATE TABLE IF NOT EXISTS `territory` (
+--
+-- );
+
+--
+-- VILLAGE
+--
+-- color : yellow, green, ...
+-- territory_id : id of territory in material.inc,
+--                NULL if the village has been removed from the map
+--
+CREATE TABLE IF NOT EXISTS village
+(
+    village_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    color_id     SMALLINT NOT NULL,
+    territory_id TINYINT UNSIGNED NULL,
+    PRIMARY KEY(village_id)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
