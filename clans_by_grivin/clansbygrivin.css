@@ -68,5 +68,56 @@
 */
 
 
+#board {
+    width: 1200px;
+    height: 800px;
+    background-image: url('img/board_1200.jpg');
+    position: relative;
+    margin: auto;
+}
+
+.territory {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* TODO : use a real image for house */
+
+.house {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    border-radius: 50%
+}
+
+.house_black {
+    background: black;
+}
+
+.house_red {
+    background: darkred;
+}
+
+.house_yellow {
+    background: darkgoldenrod;
+}
+
+.house_green {
+    background: darkgreen;
+}
+
+.house_blue {
+    background: darkblue;
+}
 
 
+.bonus {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    border-radius: 50%;
+}

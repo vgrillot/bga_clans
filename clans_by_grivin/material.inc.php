@@ -33,7 +33,7 @@ const _GRASSLAND = 4;
 
 $this->land_types = array(
     0 => array(
-        name => "Any"
+        "name" => "Any"
     ),
     1 => array(
         "name" => "Forrest"
