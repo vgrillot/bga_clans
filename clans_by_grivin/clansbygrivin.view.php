@@ -85,9 +85,9 @@ class view_clansbygrivin_clansbygrivin extends game_view
         foreach ($this->game->territories as $id => $t) {
 //            var_dump($t);
             $this->page->insert_block("territory", array(
-                "ID" => $id,
-                "LEFT" => $t["x"] - 50,
-                "TOP" => $t["y"] - 50
+                "id" => $id,
+                "left" => $t["x"] - 50,
+                "top" => $t["y"] - 50
             ));
         }
 

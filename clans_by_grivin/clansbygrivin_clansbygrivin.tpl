@@ -28,7 +28,7 @@
 
 <div id="board">
     <!-- BEGIN territory -->
-    <div id="territory_{ID}" class="territory" style="left: {LEFT}px; top: {TOP}px;"></div>
+    <div id="territory_{id}" class="territory" style="left: {left}px; top: {top}px;"></div>
     <!-- END territory -->
 
     <div id="houses">
