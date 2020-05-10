@@ -3,7 +3,7 @@
 <!-- 
 --------
 -- BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
--- ClansByGrivin implementation : © <Your name here> <Your email address here>
+-- ClansByGrivin implementation : © Vincent Grillot <grivin@gmail.com>
 -- 
 -- This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
 -- See http://en.boardgamearena.com/#!doc/Studio for more information.
@@ -26,7 +26,20 @@
 -->
 
 
-This is your game interface. You can edit this HTML in your ".tpl" file.
+<div id="board">
+    <!-- BEGIN territory -->
+    <div id="territory_{ID}" class="territory" style="left: {LEFT}px; top: {TOP}px;"></div>
+    <!-- END territory -->
+
+    <div id="houses">
+    </div>
+
+    <div id="seasons">
+    </div>
+
+    <div id="scores">
+    </div>
+</div>
 
 
 <script type="text/javascript">

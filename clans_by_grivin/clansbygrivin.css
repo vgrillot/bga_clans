@@ -83,6 +83,7 @@
     background: white;
     opacity: 0.8;
     cursor: pointer;
+    position: absolute;
 }
 
 /* TODO : use a real image for house */

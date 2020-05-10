@@ -46,7 +46,11 @@ class ClansByGrivin extends Table
     {
 		// Used for translations and stuff. Please do not modify.
         return "clansbygrivin";
-    }	
+    }
+
+    function traceExportVar( $varToExport, $varName, $functionStr ) {
+        self::trace( "###### $functionStr(): $varName is ".var_export( $varToExport, true)." " );
+    }
 
     /*
         setupNewGame:

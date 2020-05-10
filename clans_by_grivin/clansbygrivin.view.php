@@ -23,19 +23,21 @@
  * Note: if the HTML of your game interface is always the same, you don't have to place anything here.
  *
  */
-  
-  require_once( APP_BASE_PATH."view/common/game.view.php" );
-  
-  class view_clansbygrivin_clansbygrivin extends game_view
-  {
-    function getGameName() {
+
+require_once(APP_BASE_PATH . "view/common/game.view.php");
+
+class view_clansbygrivin_clansbygrivin extends game_view
+{
+    function getGameName()
+    {
         return "clansbygrivin";
-    }    
-  	function build_page( $viewArgs )
-  	{		
-  	    // Get players & players number
+    }
+
+    function build_page($viewArgs)
+    {
+        // Get players & players number
         $players = $this->game->loadPlayersBasicInfos();
-        $players_nbr = count( $players );
+        $players_nbr = count($players);
 
         /*********** Place your code below:  ************/
 
@@ -54,7 +56,7 @@
         $this->tpl['MY_VARIABLE_ELEMENT'] = self::raw( $some_html_code );
         
         */
-        
+
         /*
         
         // Example: display a specific HTML block for each player in this game.
@@ -76,10 +78,22 @@
         
         */
 
+//        var_export($this->game, true);
+//        var_dump($this->game);
+
+        $this->page->begin_block("clansbygrivin_clansbygrivin", "territory");
+        foreach ($this->game->territories as $id => $t) {
+//            var_dump($t);
+            $this->page->insert_block("territory", array(
+                "ID" => $id,
+                "LEFT" => $t["x"] - 50,
+                "TOP" => $t["y"] - 50
+            ));
+        }
 
 
         /*********** Do not change anything below this line  ************/
-  	}
-  }
+    }
+}
   
 
