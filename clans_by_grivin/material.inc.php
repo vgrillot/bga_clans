@@ -85,8 +85,7 @@ $this->seasons = array(
         "favorite_land_type" => 0, //none
         "hostile_land_type" => 0, //none
         "bonus" => 5,
-    ),
-
+    )
 );
 
 
@@ -119,6 +118,13 @@ $this->territories = array(
         "region" => 1,
         "x" => 117,
         "y" => 102,
+    ),
+    4 => array(
+        "land_type" => 2,
+        "neighbor" => array(5, 32),
+        "region" => 1,
+        "x" => 53,
+        "y" => 186,
     ),
     5 => array(
         "land_type" => 1,
@@ -162,7 +168,7 @@ $this->territories = array(
         "region" => 2,
         "x" => 495,
         "y" => 136,
-    ),
+    )
 
 
     /*x => array(

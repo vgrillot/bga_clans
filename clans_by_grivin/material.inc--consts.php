@@ -126,6 +126,13 @@ $this->territories = array(
         "x" => 117,
         "y" => 102,
     ),
+    4 => array(
+        "land_type" => _MOUNTAIN,
+        "neighbor" => array(5, 32),
+        "region" => 1,
+        "x" => 53,
+        "y" => 186,
+    ),
     5 => array(
         "land_type" => _FOREST,
         "neighbor" => array(6, 29, 32),
