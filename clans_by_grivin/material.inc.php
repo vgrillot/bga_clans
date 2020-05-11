@@ -207,3 +207,18 @@ $this->territories = array(
     ),*/
 );
 
+
+/*
+ * back-propagate links between territories
+ */
+
+foreach ($this->territories as $to_territory_id => $territory) {
+    foreach ($territory['neighbor'] as $from_territory_id) {
+        array_push($this->territories[$from_territory_id]['neighbor'],  $to_territory_id);
+    }
+}
+
+//print("\n\n\nTERRITORIES=");
+//var_export($this->territories);
+
+
