@@ -86,9 +86,9 @@
     position: absolute;
 }
 
-/* TODO : use a real image for house */
+/* TODO : use a real image for huts */
 
-.house {
+.huts {
     width: 20px;
     height: 20px;
     position: absolute;

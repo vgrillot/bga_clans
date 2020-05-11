@@ -69,6 +69,11 @@ class ClansByGrivin extends Table
  
         // Create players
         // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
+
+        // TODO: pick a random secret color for each player
+        // sort a secret color array
+        // parse all players
+        // pop the first shuffld color and assign it to player
         $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
         $values = array();
         foreach( $players as $player_id => $player )
@@ -92,6 +97,13 @@ class ClansByGrivin extends Table
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
         // TODO: setup the initial game situation here
+
+        // TODO: for all region, shuffle 5 colors, create some huts and assign it to 5 territories...
+
+        // TODO: reset seasons, put all village tokens
+
+        // TODO: reset scores
+
        
 
         // Activate first player (which is in general a good idea :) )
