@@ -69,15 +69,13 @@ class ClansByGrivin extends Table
         // The number of colors defined here must correspond to the maximum number of players allowed for the gams
         $public_color = "FFFFFF"; //white for all
 
-        // TODO: pick a random secret color for each player
+        // Prepare a random secret color for each player
         $secret_colors = $this->shuffleColors();
 
-        // sort a secret color array
-        // parse all players
-        // pop the first shuffld color and assign it to player
         $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar, player_secret_color) VALUES ";
         $values = array();
         foreach ($players as $player_id => $player) {
+            // Pick a random color secret color for the player
             $secret_color = array_shift($secret_colors);
             $values[] = sprintf("('%s','%s','%s','%s','%s', %d)",
                 $player_id,
