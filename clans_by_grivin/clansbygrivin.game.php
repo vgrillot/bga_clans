@@ -72,7 +72,7 @@ class ClansByGrivin extends Table
         // Prepare a random secret color for each player
         $secret_colors = $this->shuffleColors();
 
-        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar, player_secret_color) VALUES ";
+        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar, player_secret_color_id) VALUES ";
         $values = array();
         foreach ($players as $player_id => $player) {
             // Pick a random color secret color for the player
@@ -105,7 +105,8 @@ class ClansByGrivin extends Table
          * setup the initial game situation here
          */
 
-        // TODO: for all region, shuffle 5 colors, create some huts and assign it to 5 territories...
+        // for all region, shuffle 5 colors, create some huts and assign it to 5 territories...
+        $this->setupHuts();
 
         // TODO: reset seasons, put all village tokens
 
@@ -133,9 +134,37 @@ class ClansByGrivin extends Table
     }
 
 
+    /*
+     * setupHuts()
+     *
+     * There is 5 territories for each region
+     * Set one hut of each color randomly
+     *
+     */
     protected function setupHuts()
     {
+        $huts = array();
+//        $this->traceExportVar("test", "test", "setupHuts");
+//        $this->traceExportVar($this->territories[1], "territories", "setupHuts");
 
+        $sql = "INSERT INTO hut(color_id, territory_id) VALUES";
+        $values = array();
+
+        // parse all regions
+        foreach (range(0, 11) as $region) {
+            // pick random colors
+            $colors = $this->shuffleColors();
+            foreach (range(0, 4) as $hut) {
+                // place a hut
+                $territory_id = $region * 5 + $hut + 1;
+                $color = array_shift($colors);
+                $values[] = sprintf("(%d, %d)", $color, $territory_id);
+            }
+        }
+
+        // to the database and beyond !
+        $sql .= implode($values, ',');
+        self::DbQuery($sql);
     }
 
     /*

@@ -36,10 +36,10 @@
 --
 --  Store hidden color played
 --
---  secret_color : the color assigned to the player (yellow, green, ...)
+--  secret_color : the color assigned to the player 1..5 (yellow, green, ...)
 --
 ALTER TABLE player
-    ADD player_secret_color SMALLINT NULL;
+    ADD player_secret_color_id SMALLINT NULL;
 
 --
 -- TERRITORIES
@@ -50,17 +50,17 @@ ALTER TABLE player
 -- );
 
 --
--- VILLAGE
+-- HUT
 --
--- color : yellow, green, ...
+-- color : 1..5 (yellow, green, ...)
 -- territory_id : id of territory in material.inc,
 --                NULL if the village has been removed from the map
 --
-CREATE TABLE IF NOT EXISTS village
+CREATE TABLE IF NOT EXISTS hut
 (
-    village_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    hut_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     color_id     SMALLINT NOT NULL,
     territory_id TINYINT UNSIGNED NULL,
-    PRIMARY KEY(village_id)
+    PRIMARY KEY(hut_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
