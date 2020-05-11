@@ -60,30 +60,36 @@ class ClansByGrivin extends Table
         the game is ready to be played.
     */
     protected function setupNewGame( $players, $options = array() )
-    {    
-        // Set the colors of the players with HTML color code
-        // The default below is red/green/blue/orange/brown
-        // The number of colors defined here must correspond to the maximum number of players allowed for the gams
+    {
         $gameinfos = self::getGameinfos();
-        $default_colors = $gameinfos['player_colors'];
- 
+
         // Create players
-        // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
+
+        // The number of colors defined here must correspond to the maximum number of players allowed for the gams
+        $public_color = "FFFFFF"; //white for all
 
         // TODO: pick a random secret color for each player
+        $secret_colors = $this.$this->shuffleColors();
+
         // sort a secret color array
         // parse all players
         // pop the first shuffld color and assign it to player
-        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
+        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar, player_secret_color) VALUES ";
         $values = array();
         foreach( $players as $player_id => $player )
         {
-            $color = array_shift( $default_colors );
-            $values[] = "('".$player_id."','$color','".$player['player_canal']."','".addslashes( $player['player_name'] )."','".addslashes( $player['player_avatar'] )."')";
+            $secret_color = array_shift( $secret_colors );
+            $values[] = sprintf("(%d,'%s','%s','%s','%s', %d)",
+                $player_id,
+                $player['player_canal'],
+                addslashes($player['player_name']),
+                addslashes($player['player_avatar']),
+                $secret_color
+            );
         }
         $sql .= implode( $values, ',' );
         self::DbQuery( $sql );
-        self::reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
+        // no reattribution : self::reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
         self::reloadPlayersBasicInfos();
         
         /************ Start the game initialization *****/
@@ -96,7 +102,9 @@ class ClansByGrivin extends Table
         //self::initStat( 'table', 'table_teststat1', 0 );    // Init a table statistics
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
 
-        // TODO: setup the initial game situation here
+        /*
+         * setup the initial game situation here
+         */
 
         // TODO: for all region, shuffle 5 colors, create some huts and assign it to 5 territories...
 
@@ -110,6 +118,24 @@ class ClansByGrivin extends Table
         $this->activeNextPlayer();
 
         /************ End of the game initialization *****/
+    }
+
+    /*
+     * shuffleColors
+     *
+     * return an array of shuffled colors
+     *
+     */
+    protected function shuffleColors() {
+        $keys = array_keys($this->game->colors);
+        $shuffled_colors = shuffle($keys);
+        self::traceExportVar($shuffled_colors, "shuffled_colors", "shuffleColors()");
+        return $shuffled_colors;
+    }
+
+
+    protected function setupHuts() {
+
     }
 
     /*
