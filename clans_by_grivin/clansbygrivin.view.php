@@ -81,13 +81,13 @@ class view_clansbygrivin_clansbygrivin extends game_view
 
         $this->page->begin_block("clansbygrivin_clansbygrivin", "territory");
         foreach ($this->game->territories as $id => $t) {
-            if (array_key_exists("x", $t)) {
+//            if (array_key_exists("x", $t)) {
                 $this->page->insert_block("territory", array(
                     "id" => $id,
                     "left" => $t["x"] - 50,
                     "top" => $t["y"] - 50
                 ));
-            }
+//            }
         }
 
 

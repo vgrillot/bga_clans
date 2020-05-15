@@ -582,17 +582,10 @@ $this->territories = array(
  */
 
 foreach ($this->territories as $to_territory_id => $territory) {
-//    print("\n\nt=");
-//    var_export($territory);
     foreach ($territory['neighbor'] as $from_territory_id) {
-//        $this->territories[$to_territory_id]['neighbor'][] = $from_territory_id;
-//        print("\nfrom=");
-//        var_export($from_territory_id);
-//        print("\nto=");
-//        var_export($to_territory_id);
-        if (array_key_exists($from_territory_id, $this->territories)) {
-            array_push($this->territories[$from_territory_id]['neighbor'], $to_territory_id);
-        }
+//        if (array_key_exists($from_territory_id, $this->territories)) {
+        array_push($this->territories[$from_territory_id]['neighbor'], $to_territory_id);
+//        }
     }
 }
 
