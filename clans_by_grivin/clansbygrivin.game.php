@@ -187,8 +187,9 @@ class ClansByGrivin extends Table
         $sql = "SELECT player_id id, player_score score FROM player ";
         $result['players'] = self::getCollectionFromDb($sql);
 
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
-
+        // Get all huts position, if they have not been removed
+        $sql = "SELECT hut_id, color_id, territory_id FROM hut WHERE territory_id IS NOT NULL ORDER BY territory_id, color_id";
+        $result['board'] = self::getObjectListFromDB($sql);
         return $result;
     }
 

@@ -81,37 +81,42 @@
     height: 100px;
     border-radius: 50%;
     background: white;
-    opacity: 0.8;
+    opacity: 0.3;
     cursor: pointer;
     position: absolute;
 }
 
 /* TODO : use a real image for huts */
 
-.huts {
+.hut {
     width: 20px;
     height: 20px;
     position: absolute;
     border-radius: 50%
 }
 
-.house_black {
+/*.house_black {*/
+.color_5 {
     background: black;
 }
 
-.house_red {
+/*.house_red {*/
+.color_2 {
     background: darkred;
 }
 
-.house_yellow {
+/*.house_yellow {*/
+.color_1 {
     background: darkgoldenrod;
 }
 
-.house_green {
+/*.house_green {*/
+.color_3 {
     background: darkgreen;
 }
 
-.house_blue {
+/*.house_blue {*/
+.color_4 {
     background: darkblue;
 }
 

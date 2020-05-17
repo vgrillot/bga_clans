@@ -49,21 +49,38 @@ function (dojo, declare) {
             console.log( "Starting game setup" );
             
             // Setting up player boards
-            for( var player_id in gamedatas.players )
-            {
-                var player = gamedatas.players[player_id];
-                         
-                // TODO: Setting up players boards if needed
-            }
+            // for( var player_id in gamedatas.players )
+            // {
+            //     var player = gamedatas.players[player_id];
+            //
+            //     // TODO: Setting up players boards if needed
+            // }
             
             // TODO: Set up your game interface here, according to "gamedatas"
-            
+            // Add huts to board
+
+            console.log("board...");
+            for (const hut of gamedatas.board) {
+                this.addHutOnBoard(hut.hut_id, hut.territory_id, hut.color_id);
+            }
+
  
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
             console.log( "Ending game setup" );
         },
+
+        addHutOnBoard: function (hut_id, territory_id, color_id) {
+            // console.log('addHutOnBoard(' + hut_id + ',' + territory_id + ',' + color_id + ')');
+            hut = this.format_block('jstpl_hut', {
+                hut_id: hut_id,
+                hut_color: color_id
+            });
+            dojo.place(hut, 'huts');
+            this.placeOnObject('hut_' + hut_id, 'territory_' + territory_id);
+        },
+
        
 
         ///////////////////////////////////////////////////

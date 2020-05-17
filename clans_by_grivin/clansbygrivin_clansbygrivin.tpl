@@ -31,7 +31,7 @@
     <div id="territory_{id}" class="territory" style="left: {left}px; top: {top}px;"></div>
     <!-- END territory -->
 
-    <div id="houses">
+    <div id="huts">
     </div>
 
     <div id="seasons">
@@ -46,11 +46,10 @@
 
 // Javascript HTML templates
 
-/*
-// Example:
-var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_ID}"></div>';
+//never use something like ${id}... there is a global conflict somewhere.
 
-*/
+var jstpl_hut='<div class="hut color_${hut_color}" id="hut_${hut_id}"></div>';
+
 
 </script>  
 
