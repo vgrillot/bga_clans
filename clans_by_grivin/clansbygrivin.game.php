@@ -219,6 +219,30 @@ class ClansByGrivin extends Table
         In this space, you can put any utility methods useful for your game logic
     */
 
+    /*
+     * get all active territories (with huts)
+     */
+    function getTerritories()
+    {
+        $sql = "SELECT territory_id, count(hut_id) AS huts FROM hut GROUP BY territory_id ORDER BY territory_id";
+        $territories = self::getObjectListFromDB($sql);
+//        var_dump($territories);
+        return $territories;
+    }
+
+    // Get the list of possible moves (x => y => true)
+    function getSourceTerritories()
+    {
+        $result = array();
+        $territories = self::getTerritories();
+        foreach ($territories as $i => $territory) {
+            if ($territory['huts'] > 0) {
+                $result[] .= $territory['territory_id'];
+            }
+        }
+        return $result;
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Player actions
@@ -282,6 +306,14 @@ class ClansByGrivin extends Table
         );
     }    
     */
+
+    function argPlayerTurn()
+    {
+        return array(
+            'sourceTerritories' => self::getSourceTerritories()
+        );
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state actions
