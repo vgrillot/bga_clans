@@ -80,10 +80,15 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: white;
-    opacity: 0.3;
-    cursor: pointer;
+    visibility: hidden;
     position: absolute;
+}
+
+.territory_source {
+    visibility: visible;
+    background: white;
+    cursor: pointer;
+    opacity: 0.3;
 }
 
 /* TODO : use a real image for huts */

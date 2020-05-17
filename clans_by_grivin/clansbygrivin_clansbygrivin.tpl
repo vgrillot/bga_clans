@@ -27,14 +27,14 @@
 
 
 <div id="board">
+    <div id="huts">
+    </div>
+
     <!-- BEGIN territory -->
     <div id="territory_{id}" class="territory" style="left: {left}px; top: {top}px;"></div>
     <!-- END territory -->
 
-    <div id="huts">
-    </div>
-
-    <div id="seasons">
+    <div id="epoqs">
     </div>
 
     <div id="scores">
@@ -44,13 +44,13 @@
 
 <script type="text/javascript">
 
-// Javascript HTML templates
+    // Javascript HTML templates
 
-//never use something like ${id}... there is a global conflict somewhere.
+    //never use something like ${id}... there is a global conflict somewhere.
 
-var jstpl_hut='<div class="hut color_${hut_color}" id="hut_${hut_id}"></div>';
+    var jstpl_hut = '<div class="hut color_${hut_color}" id="hut_${hut_id}"></div>';
 
 
-</script>  
+</script>
 
 {OVERALL_GAME_FOOTER}
