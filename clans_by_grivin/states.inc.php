@@ -2,12 +2,12 @@
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
- * ClansByGrivin implementation : © <Your name here> <Your email address here>
+ * ClansByGrivin implementation : © Vincent Grillot <grivin@gmail.com>
  *
  * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
  * See http://en.boardgamearena.com/#!doc/Studio for more information.
  * -----
- * 
+ *
  * states.inc.php
  *
  * ClansByGrivin game states description
@@ -49,7 +49,7 @@
 
 //    !! It is not a good idea to modify this file when a game is running !!
 
- 
+
 $machinestates = array(
 
     // The initial state. Please do not modify.
@@ -58,43 +58,108 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array( "" => 2 )
+        "transitions" => array("" => 2)
     ),
-    
-    // Note: ID=2 => your first state
 
+
+    /*
+     *  Select the source of the move...
+     */
     2 => array(
-    		"name" => "playerTurn",
-    		"description" => clienttranslate('${actplayer} must play a card or pass'),
-    		"descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-    		"type" => "activeplayer",
-    		"possibleactions" => array( "playCard", "pass" ),
-    		"transitions" => array( "playCard" => 2, "pass" => 2 )
-    ),
-    
-/*
-    Examples:
-    
-    2 => array(
-        "name" => "nextPlayer",
-        "description" => '',
-        "type" => "game",
-        "action" => "stNextPlayer",
-        "updateGameProgression" => true,   
-        "transitions" => array( "endGame" => 99, "nextPlayer" => 10 )
-    ),
-    
-    10 => array(
         "name" => "playerTurn",
-        "description" => clienttranslate('${actplayer} must play a card or pass'),
-        "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
+        "description" => clienttranslate('${actplayer} must select all huts of one territory'),
+        "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
         "type" => "activeplayer",
-        "possibleactions" => array( "playCard", "pass" ),
-        "transitions" => array( "playCard" => 2, "pass" => 2 )
-    ), 
+        "args" => "argPlayerTurn",
+        "possibleactions" => array("selectSource"),
+        "transitions" => array("selectSource" => 11)
+    ),
 
-*/    
-   
+//    10 => array(
+//        "name" => "playerSelectSource",
+//        "description" => clienttranslate('${actplayer} must select all huts of one territory'),
+//        "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
+//        "type" => "activeplayer",
+//        "possibleactions" => array("selectSource"),
+//        "transitions" => array("selectSource" => 11)
+//    ),
+//
+    /*
+     * Select the desination of the move...
+     */
+//    11 => array(
+//        "name" => "playerSelectDestination",
+//        "description" => clienttranslate('${actplayer} must move to a destination territory'),
+//        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
+//        "type" => "activeplayer",
+//        "possibleactions" => array("selectDestination", "cancel"),
+//        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+//    ),
+
+    /*
+     * Compute the move
+     */
+    12 => array(
+        "name" => "computeVillage",
+        "description" => clienttranslate('${actplayer} must move to a destination territory'),
+        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
+        "type" => "activeplayer",
+        "possibleactions" => array("selectDestination", "cancel"),
+        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+    ),
+
+    /*
+     * Set new villages
+     *
+     * Prepare all village candidates
+     */
+    20 => array(
+        "name" => "makeVillage",
+        "description" => clienttranslate('${actplayer} must move to a destination territory'),
+        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
+        "type" => "activeplayer",
+        "possibleactions" => array("selectDestination", "cancel"),
+        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+    ),
+
+    /*
+     * Set new villages
+     *
+     * Select next village
+     */
+    21 => array(
+        "name" => "playerNextVillage",
+        "description" => clienttranslate('${actplayer} must move to a destination territory'),
+        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
+        "type" => "activeplayer",
+        "possibleactions" => array("selectDestination", "cancel"),
+        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+    ),
+
+
+    /*
+        Examples:
+
+        2 => array(
+            "name" => "nextPlayer",
+            "description" => '',
+            "type" => "game",
+            "action" => "stNextPlayer",
+            "updateGameProgression" => true,
+            "transitions" => array( "endGame" => 99, "nextPlayer" => 10 )
+        ),
+
+        10 => array(
+            "name" => "playerTurn",
+            "description" => clienttranslate('${actplayer} must play a card or pass'),
+            "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
+            "type" => "activeplayer",
+            "possibleactions" => array( "playCard", "pass" ),
+            "transitions" => array( "playCard" => 2, "pass" => 2 )
+        ),
+
+    */
+
     // Final state.
     // Please do not modify (and do not overload action/args methods).
     99 => array(
