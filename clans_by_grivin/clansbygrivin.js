@@ -102,7 +102,9 @@ define([
                         break;
                    */
                     case 'playerTurn':
-                        this.updateSourceTerritories(args.args.possibleMoves);
+                        if (this.isCurrentPlayerActive()) {
+                            this.updateSourceTerritories(args.args.sourceTerritories);
+                        }
 
 
                     case 'dummmy':
@@ -225,10 +227,12 @@ define([
                 // Remove current possible moves
                 dojo.query('.territory_source').removeClass('territory_source');
                 // Set all possible sources
-                for (var territory_id in territories) {
+                territories.forEach(territory_id =>
+                {
                     console.log("territory_id=" + territory_id);
                     dojo.addClass('territory_' + territory_id, 'territory_source')
-                }
+
+                })
                 this.addTooltipToClass('territory_source', '', _('Select huts to move'));
             },
 
