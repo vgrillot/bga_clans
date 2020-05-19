@@ -91,6 +91,13 @@
     opacity: 0.3;
 }
 
+.territory_destination {
+    visibility: visible;
+    background: red;
+    cursor: pointer;
+    opacity: 0.3;
+}
+
 /* TODO : use a real image for huts */
 
 .hut {

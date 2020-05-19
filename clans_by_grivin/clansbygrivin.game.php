@@ -244,6 +244,62 @@ class ClansByGrivin extends Table
     }
 
 
+    /*
+     * list all neighbor of a territory
+     */
+    function getNeihborTerritories($territory_id)
+    {
+        return $this->territories[$territory_id]['neighbor'];
+    }
+
+
+    /*
+     * list all possible target territories for one source territory
+     */
+    function getDestinationTerritories($src_territory_id)
+    {
+        // take all neighbor
+        $neighbor = $this->getNeihborTerritories($src_territory_id);
+        //TODO: check if they are not empty...
+        $result = array();
+    }
+
+    /*
+     * list all possible moves:
+     * - list all sources
+     * - and add all possible destinations
+     */
+    function getPossibleMoves()
+    {
+        $moves = array();
+        $territories = $this->getTerritories();
+        foreach ($territories as $i => $territory) {
+            if ($territory['huts'] > 0) {
+                $src_id = $territory['territory_id'];
+//                echo("<br><br>");
+//                var_dump($src_id);
+                $destinations = array();
+                foreach ($this->territories[$src_id]['neighbor'] as $dst_id) {
+//                    echo("<br>dst_id=$dst_id");
+                    # TODO : check village size...
+                    array_push($destinations, $dst_id);
+                }
+//                echo("<br>destination=");
+//                var_dump($destinations);
+//                $destinations = "aaa";
+                $moves[$src_id] = $destinations;
+//                array_push($moves, [$src_id => $destinations]);
+            }
+        }
+//        echo("<br><br><br><br>moves=");
+//        var_dump($moves);
+//        die();
+        return $moves;
+    }
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////
 //////////// Player actions
 //////////// 
@@ -310,7 +366,7 @@ class ClansByGrivin extends Table
     function argPlayerTurn()
     {
         return array(
-            'sourceTerritories' => self::getSourceTerritories()
+            'getPossibleMoves' => self::getPossibleMoves()
         );
     }
 

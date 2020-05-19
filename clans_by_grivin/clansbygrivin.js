@@ -102,8 +102,9 @@ define([
                         break;
                    */
                     case 'playerTurn':
+                        this.possibleMoves = args.args.getPossibleMoves;
                         if (this.isCurrentPlayerActive()) {
-                            this.updateSourceTerritories(args.args.sourceTerritories);
+                            this.updateSourceTerritories(args.args.getPossibleMoves);
                         }
 
 
@@ -219,22 +220,60 @@ define([
 
             */
 
+            clearTerritoriesClass: function() {
+                // Remove source
+                dojo.query('.territory_source').removeClass('territory_source');
+                dojo.query('.territory_destination').removeClass('territory_destination');
+
+            },
+
             /*
              * display all possible source of move
              */
             updateSourceTerritories: function (territories) {
                 console.log("updateSourceTerritories");
-                // Remove current possible moves
-                dojo.query('.territory_source').removeClass('territory_source');
+                this.clearTerritoriesClass();
                 // Set all possible sources
-                territories.forEach(territory_id =>
-                {
-                    console.log("territory_id=" + territory_id);
+                for(var territory_id in this.possibleMoves) {
+                    var destinations = territories[territory_id];
+                    // console.log("territory_id=" + territory_id);
                     dojo.addClass('territory_' + territory_id, 'territory_source')
-
-                })
+                }
                 this.addTooltipToClass('territory_source', '', _('Select huts to move'));
+                dojo.query('.territory_source').connect('onclick', this, 'onSelectSourceTerritory');
             },
+
+
+            onSelectSourceTerritory: function (evt) {
+                dojo.stopEvent( evt );
+                //TODO:checkAction
+                // if( !this.checkAction( "selectSourceTerritory" ) ) {
+                //     return;
+                // }
+                // debugger;
+                var territory = evt.currentTarget.id.split('_');
+                var territory_id = territory[1];
+                this.updateDestinationTerritories(territory_id);
+            },
+
+
+            updateDestinationTerritories: function(src_territory_id) {
+                console.log("updateDestinationTerritories");
+                this.clearTerritoriesClass();
+                // debugger;
+                destinations = this.possibleMoves[src_territory_id];
+                for(var i in destinations) {
+                    dst_id = destinations[i];
+                    // console.log("territory_id=" + territory_id);
+                    dojo.addClass('territory_' + dst_id, 'territory_destination')
+                }
+                this.addTooltipToClass('territory_destination', '', _('Move huts here'));
+                //TODO: dojo.query('.territory_destination').connect('onclick', this, 'onSelectDestinationTerritory');
+
+
+
+            },
+
 
 
             ///////////////////////////////////////////////////

@@ -71,7 +71,7 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
-        "possibleactions" => array("selectSource"),
+        "possibleactions" => array("getPossibleMoves"),
         "transitions" => array("selectSource" => 11)
     ),
 
