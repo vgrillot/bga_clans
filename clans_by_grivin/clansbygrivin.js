@@ -220,11 +220,12 @@ define([
 
             */
 
-            clearTerritoriesClass: function() {
+            clearTerritoriesClass: function () {
                 // Remove source
+                dojo.query('.territory_source').connect('onclick', this, '');
                 dojo.query('.territory_source').removeClass('territory_source');
+                dojo.query('.territory_destination').connect('onclick', this, '');
                 dojo.query('.territory_destination').removeClass('territory_destination');
-
             },
 
             /*
@@ -234,7 +235,7 @@ define([
                 console.log("updateSourceTerritories");
                 this.clearTerritoriesClass();
                 // Set all possible sources
-                for(var territory_id in this.possibleMoves) {
+                for (var territory_id in this.possibleMoves) {
                     var destinations = territories[territory_id];
                     // console.log("territory_id=" + territory_id);
                     dojo.addClass('territory_' + territory_id, 'territory_source')
@@ -245,7 +246,7 @@ define([
 
 
             onSelectSourceTerritory: function (evt) {
-                dojo.stopEvent( evt );
+                dojo.stopEvent(evt);
                 //TODO:checkAction
                 // if( !this.checkAction( "selectSourceTerritory" ) ) {
                 //     return;
@@ -257,23 +258,39 @@ define([
             },
 
 
-            updateDestinationTerritories: function(src_territory_id) {
+            onSelectDestinationTerritory: function (evt) {
+                dojo.stopEvent(evt);
+                // avoid double clic...
+                this.clearTerritoriesClass();
+                var territory = evt.currentTarget.id.split('_');
+                var dst_territory_id = territory[1];
+
+                // if (this.checkAction('moveHuts'))    // Check that this action is possible at this moment
+                // {
+                    this.ajaxcall("/clansbygrivin/clansbygrivin/moveHuts.html", {
+                        src_territory_id: this.src_territory_id,
+                        dst_territory_id: dst_territory_id
+                    }, this, function (result) {
+                    });
+                // }
+
+            },
+
+
+            updateDestinationTerritories: function (src_territory_id) {
                 console.log("updateDestinationTerritories");
+                this.src_territory_id = src_territory_id;
                 this.clearTerritoriesClass();
                 // debugger;
                 destinations = this.possibleMoves[src_territory_id];
-                for(var i in destinations) {
+                for (var i in destinations) {
                     dst_id = destinations[i];
                     // console.log("territory_id=" + territory_id);
                     dojo.addClass('territory_' + dst_id, 'territory_destination')
                 }
                 this.addTooltipToClass('territory_destination', '', _('Move huts here'));
-                //TODO: dojo.query('.territory_destination').connect('onclick', this, 'onSelectDestinationTerritory');
-
-
-
+                dojo.query('.territory_destination').connect('onclick', this, 'onSelectDestinationTerritory');
             },
-
 
 
             ///////////////////////////////////////////////////
