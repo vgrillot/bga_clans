@@ -71,30 +71,9 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
-        "possibleactions" => array("getPossibleMoves"),
-        "transitions" => array("selectSource" => 11)
+        "possibleactions" => array("playHuts"),
+        "transitions" => array("computeVillage" => 12)
     ),
-
-//    10 => array(
-//        "name" => "playerSelectSource",
-//        "description" => clienttranslate('${actplayer} must select all huts of one territory'),
-//        "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
-//        "type" => "activeplayer",
-//        "possibleactions" => array("selectSource"),
-//        "transitions" => array("selectSource" => 11)
-//    ),
-//
-    /*
-     * Select the desination of the move...
-     */
-//    11 => array(
-//        "name" => "playerSelectDestination",
-//        "description" => clienttranslate('${actplayer} must move to a destination territory'),
-//        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
-//        "type" => "activeplayer",
-//        "possibleactions" => array("selectDestination", "cancel"),
-//        "transitions" => array("selectDestination" => 12, "cancel" => 10)
-//    ),
 
     /*
      * Compute the move

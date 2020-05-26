@@ -265,9 +265,9 @@ define([
                 var territory = evt.currentTarget.id.split('_');
                 var dst_territory_id = territory[1];
 
-                // if (this.checkAction('moveHuts'))    // Check that this action is possible at this moment
+                // if (this.checkAction('playHuts'))    // Check that this action is possible at this moment
                 // {
-                    this.ajaxcall("/clansbygrivin/clansbygrivin/moveHuts.html", {
+                    this.ajaxcall("/clansbygrivin/clansbygrivin/playHuts.html", {
                         src_territory_id: this.src_territory_id,
                         dst_territory_id: dst_territory_id
                     }, this, function (result) {

@@ -63,6 +63,21 @@
     
     */
 
+      public function playHuts()
+      {
+          self::setAjaxMode();
+
+          // Retrieve arguments
+          // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+          $src_territory_id = self::getArg( "src_territory_id", AT_posint, true );
+          $dst_territory_id = self::getArg( "dst_territory_id", AT_posint, true );
+
+          // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+          $this->game->moveHuts( $src_territory_id, $dst_territory_id );
+
+          self::ajaxResponse( );
+      }
+
   }
   
 

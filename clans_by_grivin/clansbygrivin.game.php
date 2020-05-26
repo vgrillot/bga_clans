@@ -298,6 +298,54 @@ class ClansByGrivin extends Table
     }
 
 
+    /*
+     *  check if a move create a village (or more)
+     *
+     *   to list all new villages, for all source neighbor, check if they stil have other neighbor
+     */
+    function listNewVillage($territories, $src_territory_id, $dst_territory_id)
+    {
+        $villages = array();
+        foreach ($this->getNeihborTerritories($src_territory_id) as $neihbor_territory_id) {
+            $has_neighbor = False;
+            foreach ($this->getNeihborTerritories($neihbor_territory_id) as $neihbor_neihbor_territory_id) {
+                if (key_exists($neihbor_neihbor_territory_id, $territories)) {
+                    $has_neighbor = True;
+                }
+            }
+            if (!$has_neighbor) {
+                array_push($villages, $neihbor_territory_id);
+            }
+        }
+        return $villages;
+    }
+
+
+    /*
+     * apply village destruction (due to epoch/region malus)
+     */
+    function updateKillVillage($territory_id)
+    {
+        $sql = "UPDATE hut SET territory_id = NULL WHERE territory_id = $territory_id";
+        self::DbQuery( $sql );
+    }
+
+    /*
+     * apply village construction
+     */
+    function updateVillageConstruction($territory_id) {
+
+    }
+
+
+    /*
+     *  apply huts move
+     */
+    function updateMoveHuts($src_territory_id, $dst_territory_id)
+    {
+        $sql = "UPDATE hut SET territory_id = $dst_territory_id WHERE territory_id = $src_territory_id";
+        self::DbQuery( $sql );
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -334,6 +382,44 @@ class ClansByGrivin extends Table
     }
     
     */
+
+
+    /*
+     * moveHuts
+     */
+    function moveHuts($src_territory_id, $dst_territory_id)
+    {
+
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        //TODO: self::checkAction( 'moveHuts' );
+        //TODO: check movement is possible...
+        //TODO: listNewVillage
+
+        $this->updateMoveHuts($src_territory_id, $dst_territory_id);
+
+        $player_id = self::getActivePlayerId();
+
+        // Add your game logic to play a card there
+
+        // Notify all players about the card played
+        self::notifyAllPlayers("moveHuts", clienttranslate('${player_name} plays '), array(
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'src_territory_id' => $src_territory_id,
+            'dst_territory_id' => $dst_territory_id,
+        ));
+
+        self::notifyAllPlayers("moveHuts", clienttranslate('${player_name} plays '), array(
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'src_territory_id' => $src_territory_id,
+            'dst_territory_id' => $dst_territory_id,
+        ));
+
+        // Then, go to the next state
+        $this->gamestate->nextState( 'computeVillage' );
+
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////
