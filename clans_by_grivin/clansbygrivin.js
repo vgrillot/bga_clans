@@ -222,6 +222,10 @@ define([
 
             clearTerritoriesClass: function () {
                 // Remove source
+
+                // TODO: connect onclick to '' do nothing, and do not disconnect :(
+
+                dojo.query('.territory').connect('onclick', this, '');
                 dojo.query('.territory_source').connect('onclick', this, '');
                 dojo.query('.territory_source').removeClass('territory_source');
                 dojo.query('.territory_destination').connect('onclick', this, '');
@@ -251,7 +255,11 @@ define([
                 // if( !this.checkAction( "selectSourceTerritory" ) ) {
                 //     return;
                 // }
-                // debugger;
+                debugger;
+                if (!dojo.hasClass(evt.currentTarget.id, 'territory_source')) {
+                    // this should not happend to still have the onclick() plugged here :(
+                    return;
+                }
                 var territory = evt.currentTarget.id.split('_');
                 var territory_id = territory[1];
                 this.updateDestinationTerritories(territory_id);
@@ -260,18 +268,25 @@ define([
 
             onSelectDestinationTerritory: function (evt) {
                 dojo.stopEvent(evt);
-                // avoid double clic...
-                this.clearTerritoriesClass();
+                debugger;
                 var territory = evt.currentTarget.id.split('_');
                 var dst_territory_id = territory[1];
 
+                if (!dojo.hasClass(evt.currentTarget.id, 'territory_destination')) {
+                    // this should not happend to still have the onclick() plugged here :(
+                    return;
+                }
+
+                // avoid double clic...
+                this.clearTerritoriesClass();
+
                 // if (this.checkAction('playHuts'))    // Check that this action is possible at this moment
                 // {
-                    this.ajaxcall("/clansbygrivin/clansbygrivin/playHuts.html", {
-                        src_territory_id: this.src_territory_id,
-                        dst_territory_id: dst_territory_id
-                    }, this, function (result) {
-                    });
+                this.ajaxcall("/clansbygrivin/clansbygrivin/playHuts.html", {
+                    src_territory_id: this.src_territory_id,
+                    dst_territory_id: dst_territory_id
+                }, this, function (result) {
+                });
                 // }
 
             },

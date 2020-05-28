@@ -298,6 +298,13 @@ class ClansByGrivin extends Table
     }
 
 
+    function getVillages()
+    {
+        //TODO:
+        return array();
+    }
+
+
     /*
      *  check if a move create a village (or more)
      *
@@ -327,13 +334,14 @@ class ClansByGrivin extends Table
     function updateKillVillage($territory_id)
     {
         $sql = "UPDATE hut SET territory_id = NULL WHERE territory_id = $territory_id";
-        self::DbQuery( $sql );
+        self::DbQuery($sql);
     }
 
     /*
      * apply village construction
      */
-    function updateVillageConstruction($territory_id) {
+    function updateVillageConstruction($territory_id)
+    {
 
     }
 
@@ -344,7 +352,7 @@ class ClansByGrivin extends Table
     function updateMoveHuts($src_territory_id, $dst_territory_id)
     {
         $sql = "UPDATE hut SET territory_id = $dst_territory_id WHERE territory_id = $src_territory_id";
-        self::DbQuery( $sql );
+        self::DbQuery($sql);
     }
 
 
@@ -393,7 +401,6 @@ class ClansByGrivin extends Table
         // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
         //TODO: self::checkAction( 'moveHuts' );
         //TODO: check movement is possible...
-        //TODO: listNewVillage
 
         $this->updateMoveHuts($src_territory_id, $dst_territory_id);
 
@@ -409,17 +416,27 @@ class ClansByGrivin extends Table
             'dst_territory_id' => $dst_territory_id,
         ));
 
-        self::notifyAllPlayers("moveHuts", clienttranslate('${player_name} plays '), array(
-            'player_id' => $player_id,
-            'player_name' => self::getActivePlayerName(),
-            'src_territory_id' => $src_territory_id,
-            'dst_territory_id' => $dst_territory_id,
-        ));
+        //TODO: listNewVillage
+        $new_village = 0; //!!!TEMP
+
+        if ($new_village > 1) {
+            // There is more than one village, a decision should be taken
+            // TODO:can ignore village selection for creation if there is no impact from epoch bonus.
+            $this->gamestate->nextState('selectVillage');
+            return;
+        } elseif ($new_village == 1) {
+            // TODO : apply the village and continue to the next player
+        }
+
 
         // Then, go to the next state
-        $this->gamestate->nextState( 'computeVillage' );
+        $this->gamestate->nextState('nextPlayer');
 
     }
+
+    /*
+     * makeVillage()
+     */
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -456,6 +473,13 @@ class ClansByGrivin extends Table
         );
     }
 
+    function argSelectVillage()
+    {
+        return array(
+            'getVillages' => self::getVillages()
+        );
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state actions
@@ -478,6 +502,35 @@ class ClansByGrivin extends Table
         $this->gamestate->nextState( 'some_gamestate_transition' );
     }    
     */
+
+
+    function stNextPlayer()
+    {
+        // Active next player
+        $player_id = self::activeNextPlayer();
+
+        // TODO : check if there is still some epoch to play...
+        $remainingEpoch = 5; //!!!TEMP
+
+        if ($remainingEpoch == 0) {
+            // Index 0 has not been set => there's no more free place on the board !
+            // => end of the game
+            $this->gamestate->nextState('endGame');
+            return;
+        }
+
+        // This player can play. Give him some extra time
+        self::giveExtraTime($player_id);
+        $this->gamestate->nextState('playerTurn');
+
+    }
+
+    function stGameEnd()
+    {
+        // TODO: reveal secret colors
+        // TODO: attribute scores
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Zombie

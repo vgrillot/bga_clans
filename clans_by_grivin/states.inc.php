@@ -58,86 +58,49 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 2)
+        "transitions" => array("" => 10)
     ),
 
 
     /*
      *  Select the source of the move...
      */
-    2 => array(
+    10 => array(
         "name" => "playerTurn",
         "description" => clienttranslate('${actplayer} must select all huts of one territory'),
         "descriptionmyturn" => clienttranslate('${you} must select all huts of one territory'),
         "type" => "activeplayer",
         "args" => "argPlayerTurn",
         "possibleactions" => array("playHuts"),
-        "transitions" => array("computeVillage" => 12)
+        "transitions" => array("selectVillage" => 12, "zombiePass" => 40, "nextPlayer" => 40)
     ),
 
     /*
-     * Compute the move
+     * Need to select a village
      */
+
     12 => array(
-        "name" => "computeVillage",
-        "description" => clienttranslate('${actplayer} must move to a destination territory'),
-        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
+        "name" => "selectVillage",
+        "description" => clienttranslate('${actplayer} must select a village'),
+        "descriptionmyturn" => clienttranslate('${you} must select a village'),
         "type" => "activeplayer",
-        "possibleactions" => array("selectDestination", "cancel"),
-        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+        "args" => "argSelectVillage",
+        "possibleactions" => array("playVillage"),
+        "transitions" => array("playVillage" => 20,)
     ),
 
+
     /*
-     * Set new villages
-     *
-     * Prepare all village candidates
+     * Huts moved, Villages resolved, New epoch...
      */
-    20 => array(
-        "name" => "makeVillage",
-        "description" => clienttranslate('${actplayer} must move to a destination territory'),
-        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
-        "type" => "activeplayer",
-        "possibleactions" => array("selectDestination", "cancel"),
-        "transitions" => array("selectDestination" => 12, "cancel" => 10)
+    40 => array(
+        "name" => "nextPlayer",
+        "type" => "game",
+        "action" => "stNextPlayer",
+        //TODO:"updateGameProgression" => true,
+        "transitions" => array("playerTurn" => 10, "endGame" => 99)
     ),
 
-    /*
-     * Set new villages
-     *
-     * Select next village
-     */
-    21 => array(
-        "name" => "playerNextVillage",
-        "description" => clienttranslate('${actplayer} must move to a destination territory'),
-        "descriptionmyturn" => clienttranslate('${you} must move to a destination territory'),
-        "type" => "activeplayer",
-        "possibleactions" => array("selectDestination", "cancel"),
-        "transitions" => array("selectDestination" => 12, "cancel" => 10)
-    ),
-
-
-    /*
-        Examples:
-
-        2 => array(
-            "name" => "nextPlayer",
-            "description" => '',
-            "type" => "game",
-            "action" => "stNextPlayer",
-            "updateGameProgression" => true,
-            "transitions" => array( "endGame" => 99, "nextPlayer" => 10 )
-        ),
-
-        10 => array(
-            "name" => "playerTurn",
-            "description" => clienttranslate('${actplayer} must play a card or pass'),
-            "descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
-            "type" => "activeplayer",
-            "possibleactions" => array( "playCard", "pass" ),
-            "transitions" => array( "playCard" => 2, "pass" => 2 )
-        ),
-
-    */
 
     // Final state.
     // Please do not modify (and do not overload action/args methods).
