@@ -23,6 +23,10 @@
     See your "view" PHP file to check how to set variables and control blocks
     
     Please REMOVE this comment before publishing your game on BGA
+
+    for debug purposes, display territory id on map:
+    <div id="territory_{id}" class="territory" style="left: {left}px; top: {top}px;"><div class="inner_territory">{id}</div></div>
+
 -->
 
 

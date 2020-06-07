@@ -84,6 +84,21 @@
     position: absolute;
 }
 
+/*
+* for debug purposes...
+ */
+.inner_territory {
+    visibility: visible;
+    position: relative;
+    top:20px;
+    left:20px;
+    background: yellow;
+    color: darkblue;
+    font-size: 50px;
+    /*opacity: 100%;*/
+    /*z-index: 500;*/
+}
+
 .territory_source {
     visibility: visible;
     background: white;
