@@ -348,11 +348,17 @@ class ClansByGrivin extends Table
 
     /*
      *  apply huts move
+     *  return the list of updated huts
      */
     function updateMoveHuts($src_territory_id, $dst_territory_id)
     {
+        // save the list of update huts
+        $sql = "SELECT * FROM hut WHERE territory_id = $src_territory_id";
+        $huts = self::getObjectListFromDB($sql);
+        // apply the move to db
         $sql = "UPDATE hut SET territory_id = $dst_territory_id WHERE territory_id = $src_territory_id";
         self::DbQuery($sql);
+        return $huts;
     }
 
 
@@ -402,7 +408,7 @@ class ClansByGrivin extends Table
         //TODO: self::checkAction( 'moveHuts' );
         //TODO: check movement is possible...
 
-        $this->updateMoveHuts($src_territory_id, $dst_territory_id);
+        $huts = $this->updateMoveHuts($src_territory_id, $dst_territory_id);
 
         $player_id = self::getActivePlayerId();
 
@@ -414,6 +420,7 @@ class ClansByGrivin extends Table
             'player_name' => self::getActivePlayerName(),
             'src_territory_id' => $src_territory_id,
             'dst_territory_id' => $dst_territory_id,
+            'huts' => $huts,
         ));
 
         //TODO: listNewVillage

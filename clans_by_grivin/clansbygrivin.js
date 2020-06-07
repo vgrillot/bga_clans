@@ -77,7 +77,9 @@ define([
                     hut_color: color_id
                 });
                 dojo.place(hut, 'huts');
-                this.placeOnObject('hut_' + hut_id, 'territory_' + territory_id);
+                // this.placeOnObject('hut_' + hut_id, 'territory_' + territory_id);
+                const [x, y] = this.get_new_hut_xy(i, false);
+                this.placeOnObjectPos('hut_' + hut_id, 'territory_' + territory_id, x, y);
             },
 
 
@@ -255,7 +257,7 @@ define([
                 // if( !this.checkAction( "selectSourceTerritory" ) ) {
                 //     return;
                 // }
-                debugger;
+                // debugger;
                 if (!dojo.hasClass(evt.currentTarget.id, 'territory_source')) {
                     // this should not happend to still have the onclick() plugged here :(
                     return;
@@ -268,7 +270,7 @@ define([
 
             onSelectDestinationTerritory: function (evt) {
                 dojo.stopEvent(evt);
-                debugger;
+                // debugger;
                 var territory = evt.currentTarget.id.split('_');
                 var dst_territory_id = territory[1];
 
@@ -334,6 +336,10 @@ define([
                 // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
                 // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
                 //
+
+                console.log("subscribe notif_moveHuts...")
+                dojo.subscribe('moveHuts', this, 'notif_moveHuts');
+                // this.notifqueue.setSynchronous( 'moveHuts', 3000 );
             },
 
             // TODO: from this point and below, you can write your game notifications handling methods
@@ -352,5 +358,32 @@ define([
             },
 
             */
+
+            /*
+             * move huts...
+             */
+            notif_moveHuts(notif) {
+                console.log('notif_moveHuts');
+                console.log(notif);
+                territory_id = "territory_" + notif.args.dst_territory_id;
+                for (var i in notif.args.huts) {
+                    hut_id = "hut_" + notif.args.huts[i].hut_id;
+                    const [x, y] = this.get_new_hut_xy(i, true);
+                    console.log("slideToObjectPos(" + hut_id + ", " + territory_id + ", " + x + ", " + y + ")");
+                    this.slideToObjectPos(hut_id, territory_id, x, y).play();
+                }
+            },
+
+            /*
+             * define new [x, y] offset for the hut to see them all
+             * has_offset: slideTo...() need the center offset, placeTo() doesn't
+             */
+            get_new_hut_xy(n, has_offset) {
+                const delta = 30;
+                const offset = has_offset ? 50 : 0; // +50 : center of territory (100 diameter)
+                const x = Math.random() * delta - delta / 2 + offset;
+                const y = Math.random() * delta - delta / 2 + offset;
+                return [x, y]
+            }
         });
     });

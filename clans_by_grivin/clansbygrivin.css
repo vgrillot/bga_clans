@@ -103,7 +103,8 @@
 .hut {
     width: 20px;
     height: 20px;
-    position: absolute;
+    /*position: absolute;*/
+    position: relative; /* try to have huts side by side*/
     border-radius: 50%
 }
 
