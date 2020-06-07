@@ -222,23 +222,32 @@ class ClansByGrivin extends Table
     /*
      * get all active territories (with huts)
      */
-    function getTerritories()
+    function updateTerritoriesHutCount()
     {
+        foreach ($this->territories as $id => &$t)
+            $t['huts'] = "0";
+
         $sql = "SELECT territory_id, count(hut_id) AS huts FROM hut GROUP BY territory_id ORDER BY territory_id";
-        $territories = self::getObjectListFromDB($sql);
-//        var_dump($territories);
-        return $territories;
+        $qry_huts = self::getObjectListFromDB($sql);
+
+        // update the map
+        foreach ($qry_huts as &$h) {
+            $id = $h['territory_id'];
+            $t = &$this->territories[$id];
+            $t['huts'] = $h['huts'];
+        }
+
+        return $qry_huts;
     }
 
     // Get the list of possible moves (x => y => true)
     function getSourceTerritories()
     {
         $result = array();
-        $territories = self::getTerritories();
-        foreach ($territories as $i => $territory) {
-            if ($territory['huts'] > 0) {
+        $this->updateTerritoriesHutCount();
+        foreach ($this->territories as $territory) {
+            if ($territory['huts'] > 0)
                 $result[] .= $territory['territory_id'];
-            }
         }
         return $result;
     }
@@ -272,28 +281,26 @@ class ClansByGrivin extends Table
     function getPossibleMoves()
     {
         $moves = array();
-        $territories = $this->getTerritories();
-        foreach ($territories as $i => $territory) {
-            if ($territory['huts'] > 0) {
-                $src_id = $territory['territory_id'];
-//                echo("<br><br>");
-//                var_dump($src_id);
+        $this->updateTerritoriesHutCount();
+
+        foreach ($this->territories as $src_id => $territory) {
+            $src_huts = $territory['huts'];
+
+            if ($src_huts > 0) {
                 $destinations = array();
-                foreach ($this->territories[$src_id]['neighbor'] as $dst_id) {
-//                    echo("<br>dst_id=$dst_id");
+                foreach ($territory['neighbor'] as $dst_id) {
+                    $dst_huts = $this->territories[$dst_id]['huts'];
+                    // Allow only to move into non empty territory
+                    if ($dst_huts == 0)
+                        continue;
+
                     # TODO : check village size...
                     array_push($destinations, $dst_id);
                 }
-//                echo("<br>destination=");
-//                var_dump($destinations);
-//                $destinations = "aaa";
-                $moves[$src_id] = $destinations;
-//                array_push($moves, [$src_id => $destinations]);
+                if (count($destinations) > 0)
+                    $moves[$src_id] = $destinations;
             }
         }
-//        echo("<br><br><br><br>moves=");
-//        var_dump($moves);
-//        die();
         return $moves;
     }
 
