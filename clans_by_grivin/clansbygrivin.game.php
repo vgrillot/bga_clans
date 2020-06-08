@@ -256,7 +256,7 @@ class ClansByGrivin extends Table
     /*
      * list all neighbor of a territory
      */
-    function getNeihborTerritories($territory_id)
+    function getNeighborTerritories($territory_id)
     {
         return $this->territories[$territory_id]['neighbor'];
     }
@@ -268,7 +268,7 @@ class ClansByGrivin extends Table
     function getDestinationTerritories($src_territory_id)
     {
         // take all neighbor
-        $neighbor = $this->getNeihborTerritories($src_territory_id);
+        $neighbor = $this->getNeighborTerritories($src_territory_id);
         //TODO: check if they are not empty...
         $result = array();
     }
@@ -320,9 +320,9 @@ class ClansByGrivin extends Table
     function listNewVillage($territories, $src_territory_id, $dst_territory_id)
     {
         $villages = array();
-        foreach ($this->getNeihborTerritories($src_territory_id) as $neihbor_territory_id) {
+        foreach ($this->getNeighborTerritories($src_territory_id) as $neihbor_territory_id) {
             $has_neighbor = False;
-            foreach ($this->getNeihborTerritories($neihbor_territory_id) as $neihbor_neihbor_territory_id) {
+            foreach ($this->getNeighborTerritories($neihbor_territory_id) as $neihbor_neihbor_territory_id) {
                 if (key_exists($neihbor_neihbor_territory_id, $territories)) {
                     $has_neighbor = True;
                 }
