@@ -220,7 +220,7 @@ class ClansByGrivin extends Table
     */
 
     /*
-     * get all active territories (with huts)
+     * update map with current huts count
      */
     function updateTerritoriesHutCount()
     {
@@ -236,8 +236,6 @@ class ClansByGrivin extends Table
             $t = &$this->territories[$id];
             $t['huts'] = $h['huts'];
         }
-
-        return $qry_huts;
     }
 
     // Get the list of possible moves (x => y => true)
