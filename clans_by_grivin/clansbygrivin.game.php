@@ -288,8 +288,13 @@ class ClansByGrivin extends Table
                 $destinations = array();
                 foreach ($territory['neighbor'] as $dst_id) {
                     $dst_huts = $this->territories[$dst_id]['huts'];
+
                     // Allow only to move into non empty territory
                     if ($dst_huts == 0)
+                        continue;
+
+                    // Big village cannot move, but if they are moving to a bigger
+                    if (($src_huts >= 7) && ($src_huts > $dst_huts))
                         continue;
 
                     # TODO : check village size...
