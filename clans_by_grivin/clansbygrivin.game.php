@@ -297,9 +297,10 @@ class ClansByGrivin extends Table
                     if (($src_huts >= 7) && ($src_huts > $dst_huts))
                         continue;
 
-                    # TODO : check village size...
                     array_push($destinations, $dst_id);
                 }
+
+                // add the possible move only if it has some destination
                 if (count($destinations) > 0)
                     $moves[$src_id] = $destinations;
             }
