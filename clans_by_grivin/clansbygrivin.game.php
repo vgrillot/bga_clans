@@ -261,17 +261,6 @@ class ClansByGrivin extends Table
 
 
     /*
-     * list all possible target territories for one source territory
-     */
-    function getDestinationTerritories($src_territory_id)
-    {
-        // take all neighbor
-        $neighbor = $this->getNeighborTerritories($src_territory_id);
-        //TODO: check if they are not empty...
-        $result = array();
-    }
-
-    /*
      * list all possible moves:
      * - list all sources
      * - and add all possible destinations
@@ -309,19 +298,12 @@ class ClansByGrivin extends Table
     }
 
 
-    function getVillages()
-    {
-        //TODO:
-        return array();
-    }
-
-
     /*
      *  check if a move create a village (or more)
      *
-     *   to list all new villages, for all source neighbor, check if they stil have other neighbor
+     *   to list all new villages, for all source neighbor, check if they still have other neighbor
      */
-    function listNewVillage($territories, $src_territory_id, $dst_territory_id)
+    function listNewVillage($territories, $src_territory_id)
     {
         $villages = array();
         foreach ($this->getNeighborTerritories($src_territory_id) as $neihbor_territory_id) {
