@@ -41,13 +41,6 @@
 ALTER TABLE player
     ADD player_secret_color_id SMALLINT NULL;
 
---
--- TERRITORIES
--- might be calculated...
---
--- CREATE TABLE IF NOT EXISTS `territory` (
---
--- );
 
 --
 -- HUT
