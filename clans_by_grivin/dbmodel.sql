@@ -45,15 +45,33 @@ ALTER TABLE player
 --
 -- HUT
 --
--- color : 1..5 (yellow, green, ...)
+-- color_id : 1..5 (yellow, green, ...)
 -- territory_id : id of territory in material.inc,
 --                NULL if the village has been removed from the map
 --
 CREATE TABLE IF NOT EXISTS hut
 (
-    hut_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    color_id     SMALLINT NOT NULL,
-    territory_id TINYINT UNSIGNED NULL,
-    PRIMARY KEY(hut_id)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
+    hut_id       SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    color_id     SMALLINT          NOT NULL,
+    territory_id TINYINT UNSIGNED  NULL,
+    PRIMARY KEY (hut_id)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1;
 
+
+--
+-- VILLAGE
+--
+-- player_id : who created the current village
+-- resolved : True if the bonus token has been attributed, huts destroyed if needed, village destroyed if needed, ...
+--
+--
+CREATE TABLE IF NOT EXISTS village
+(
+    village_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    player_id    SMALLINT          NOT NULL,
+    territory_id TINYINT UNSIGNED  NULL,
+    resolved     BOOL              NOT NULL DEFAULT FALSE,
+    PRIMARY KEY (village_id)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1;

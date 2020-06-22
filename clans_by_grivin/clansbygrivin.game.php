@@ -238,6 +238,23 @@ class ClansByGrivin extends Table
         }
     }
 
+
+    /*
+     * insert a list of a new village, assign them to the current player and flag them unresolved yet.
+     */
+    function insertVillages($new_villages)
+    {
+        $current_player_id = self::getCurrentPlayerId();    // !! We must only return information visible by this player !!
+        $sql = "INSERT INTO village(player_id, territory_id) VALUES";
+        $values = array();
+        foreach ($new_villages as $territory_id) {
+            $values[] = sprintf("(%d, %d)", $current_player_id, $territory_id);
+            $sql .= implode($values, ',');
+            self::DbQuery($sql);
+        }
+    }
+
+
     // Get the list of possible moves (x => y => true)
     function getSourceTerritories()
     {
@@ -306,15 +323,15 @@ class ClansByGrivin extends Table
     function listNewVillage($territories, $src_territory_id)
     {
         $villages = array();
-        foreach ($this->getNeighborTerritories($src_territory_id) as $neihbor_territory_id) {
+        foreach ($this->getNeighborTerritories($src_territory_id) as $neighbor_territory_id) {
             $has_neighbor = False;
-            foreach ($this->getNeighborTerritories($neihbor_territory_id) as $neihbor_neihbor_territory_id) {
-                if (key_exists($neihbor_neihbor_territory_id, $territories)) {
+            foreach ($this->getNeighborTerritories($neighbor_territory_id) as $neighbor_neighbor_territory_id) {
+                if (key_exists($neighbor_neighbor_territory_id, $territories)) {
                     $has_neighbor = True;
                 }
             }
             if (!$has_neighbor) {
-                array_push($villages, $neihbor_territory_id);
+                array_push($villages, $neighbor_territory_id);
             }
         }
         return $villages;
