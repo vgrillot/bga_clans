@@ -373,7 +373,7 @@ class ClansByGrivin extends Table
         $qry = self::getObjectListFromDB($sql);
 
         foreach ($qry as &$h) {
-            $huts[] = $h['hut_id']
+            $huts[] = $h['hut_id'];
         }
 
         return $huts;
