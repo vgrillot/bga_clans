@@ -351,6 +351,36 @@ class ClansByGrivin extends Table
 
 
     /*
+     * listSingleHuts()
+     * return the list of single hut of this village, if any
+     */
+    function listSingleHuts($territory_id)
+    {
+        $huts = array();
+
+
+        $sql = "SELECT hut_id" .
+            "FROM huts " .
+            "WHERE territory_id = $territory_id " .
+            "AND color_id in ( " .
+            "  SELECT color_id " . //TODO:not sure if SQL is correct without the COUNT in select...
+            "  FROM huts " .
+            "  WHERE territory_id = $territory_id " .
+            "  GROUP BY color_id " .
+            "  HAVING COUNT(*) = 1 " .
+            ")";
+
+        $qry = self::getObjectListFromDB($sql);
+
+        foreach ($qry as &$h) {
+            $huts[] = $h['hut_id']
+        }
+
+        return $huts;
+    }
+
+
+    /*
      * apply village destruction (due to epoch/region malus)
      */
     function updateKillVillage($territory_id)
@@ -472,6 +502,7 @@ class ClansByGrivin extends Table
         //TODO: self::checkAction( 'makeVillage' );
         //TODO: check movement is possible...
         //TODO: manage village dispute (if 5 colors, all single huts are removed)
+        single_huts = listSingleHuts($territory_id);
         //TODO: notify single huts destruction
         //TODO: manage season (bonus or malus)
         //TODO: notify village destruction or construction
