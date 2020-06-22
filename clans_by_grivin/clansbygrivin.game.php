@@ -336,14 +336,16 @@ class ClansByGrivin extends Table
     {
         $villages = array();
         foreach ($this->getNeighborTerritories($src_territory_id) as $neighbor_territory_id) {
-            $has_neighbor = False;
-            foreach ($this->getNeighborTerritories($neighbor_territory_id) as $neighbor_neighbor_territory_id) {
-                if (key_exists($neighbor_neighbor_territory_id, $this->territories)) {
-                    $has_neighbor = True;
+            if ($this->territories[$neighbor_territory_id]['huts'] > 0) {
+                $has_neighbor = False;
+                foreach ($this->getNeighborTerritories($neighbor_territory_id) as $neighbor_neighbor_territory_id) {
+                    if ($this->territories[$neighbor_neighbor_territory_id]['huts'] > 0) {
+                        $has_neighbor = True;
+                    }
                 }
-            }
-            if (!$has_neighbor) {
-                array_push($villages, $neighbor_territory_id);
+                if (!$has_neighbor) {
+                    array_push($villages, $neighbor_territory_id);
+                }
             }
         }
         return $villages;
@@ -357,27 +359,23 @@ class ClansByGrivin extends Table
     function listSingleHuts($territory_id)
     {
         $huts = array();
-
-
-        $sql = "SELECT hut_id" .
-            "FROM huts " .
+        $sql = "SELECT hut_id " .
+            "FROM hut " .
             "WHERE territory_id = $territory_id " .
             "AND color_id in ( " .
-            "  SELECT color_id " . //TODO:not sure if SQL is correct without the COUNT in select...
-            "  FROM huts " .
+            "  SELECT color_id " .
+            "  FROM hut " .
             "  WHERE territory_id = $territory_id " .
             "  GROUP BY color_id " .
             "  HAVING COUNT(*) = 1 " .
             ")";
-
         $qry = self::getObjectListFromDB($sql);
-
         foreach ($qry as &$h) {
             $huts[] = $h['hut_id'];
         }
-
         return $huts;
     }
+
 
     /*
      * removeHut()
@@ -419,6 +417,9 @@ class ClansByGrivin extends Table
         // apply the move to db
         $sql = "UPDATE hut SET territory_id = $dst_territory_id WHERE territory_id = $src_territory_id";
         self::DbQuery($sql);
+
+        // reload the territories from DB... (could be calculated...)
+        $this->updateTerritoriesHutCount();
         return $huts;
     }
 
@@ -475,7 +476,7 @@ class ClansByGrivin extends Table
 
         // Add your game logic to play a card there
 
-        // Notify all players about the card played
+        // Notify all players one or more huts have been moved
         self::notifyAllPlayers("moveHuts", clienttranslate('${player_name} plays '), array(
             'player_id' => $player_id,
             'player_name' => self::getActivePlayerName(),
@@ -484,8 +485,8 @@ class ClansByGrivin extends Table
             'huts' => $huts,
         ));
 
-        //TODO: listNewVillage
-        $new_villages = self::listNewVillage();
+        $new_villages = $this->listNewVillage($src_territory_id);
+//        $new_villages = [$dst_territory_id]; //!!!TEMP:force a village. ..
 
         if (count($new_villages) > 1) {
             // There is more than one village, a decision should be taken
@@ -509,6 +510,8 @@ class ClansByGrivin extends Table
      */
     function makeVillage($territory_id)
     {
+        $player_id = self::getActivePlayerId();
+
         //TODO: self::checkAction( 'makeVillage' );
         //TODO: check movement is possible...
         $single_huts = $this->listSingleHuts($territory_id);
@@ -526,6 +529,12 @@ class ClansByGrivin extends Table
 
         //TODO: manage season (bonus or malus)
         //TODO: notify village destruction or construction
+        self::notifyAllPlayers("villageBuilt", clienttranslate('${player_name} build a village'), array(
+            'player_id' => $player_id,
+            'player_name' => self::getActivePlayerName(),
+            'src_territory_id' => $territory_id,
+            'huts' => $single_huts,
+        ));
         //TODO: notify bonus token
     }
 

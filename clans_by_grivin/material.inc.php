@@ -64,16 +64,16 @@ $this->land_types = array(
     0 => array(
         "name" => "Any"
     ),
-    1 => array(
+    _FOREST => array(
         "name" => "Forrest"
     ),
-    2 => array(
+    _MOUNTAIN => array(
         "name" => "Mountains"
     ),
-    3 => array(
+    _STEPPE => array(
         "name" => "Steppe"
     ),
-    4 => array(
+    _GRASSLAND => array(
         "name" => "Grassland"
     )
 );

@@ -344,6 +344,11 @@ define([
                 dojo.subscribe('villageDispute', this, 'notif_villageDispute');
                 this.notifqueue.setSynchronous('villageDispute', 3000);
 
+                dojo.subscribe('villageBuilt', this, 'notif_villageBuilt');
+                this.notifqueue.setSynchronous('villageBuilt', 3000);
+
+                dojo.subscribe('villageDestroyed', this, 'notif_villageDestroyed');
+                this.notifqueue.setSynchronous('villageDestroyed', 3000);
             },
 
             // TODO: from this point and below, you can write your game notifications handling methods
@@ -383,14 +388,30 @@ define([
              * remote all single huts in this village
              */
             notif_villageDispute(notif) {
-                // dojo.subscribe('villageDispute', this, 'notif_villageDispute');
                 console.log('notif_villageDispute');
                 console.log(notif);
                 territory_id = "territory_" + notif.args.src_territory_id;
                 for (var i in notif.args.huts) {
-                    hut_id = "hut_" + notif.args.huts[i].hut_id;
+                    hut_id = "hut_" + notif.args.huts[i];
                     this.remove_hut(hut_id);
                 }
+            },
+
+            /*
+             *
+             */
+            notif_villageBuilt(notif) {
+                console.log('notif_villageBuilt');
+                console.log(notif);
+
+            },
+
+            /*
+             *
+             */
+            notif_villageDestroyed(notif) {
+                console.log('notif_villageDestroyed');
+                console.log(notif);
 
             },
 
