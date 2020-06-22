@@ -340,6 +340,10 @@ define([
                 console.log("subscribe notif_moveHuts...")
                 dojo.subscribe('moveHuts', this, 'notif_moveHuts');
                 // this.notifqueue.setSynchronous( 'moveHuts', 3000 );
+
+                dojo.subscribe('villageDispute', this, 'notif_villageDispute');
+                this.notifqueue.setSynchronous('villageDispute', 3000);
+
             },
 
             // TODO: from this point and below, you can write your game notifications handling methods
@@ -373,6 +377,33 @@ define([
                     this.slideToObjectPos(hut_id, territory_id, x, y).play();
                 }
             },
+
+            /*
+             * notif_villageDispute
+             * remote all single huts in this village
+             */
+            notif_villageDispute(notif) {
+                // dojo.subscribe('villageDispute', this, 'notif_villageDispute');
+                console.log('notif_villageDispute');
+                console.log(notif);
+                territory_id = "territory_" + notif.args.src_territory_id;
+                for (var i in notif.args.huts) {
+                    hut_id = "hut_" + notif.args.huts[i].hut_id;
+                    this.remove_hut(hut_id);
+                }
+
+            },
+
+
+            remove_hut(hut_id) {
+                console.log('remove_hut');
+                console.log(hut_id);
+                //TODO:slide out of board
+                // this.slideToObjectPos(hut_id, territory_id, x, y).play();
+                this.fadeOutAndDestroy(hut_id);
+
+            },
+
 
             /*
              * define new [x, y] offset for the hut to see them all

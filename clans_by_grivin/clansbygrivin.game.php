@@ -379,6 +379,15 @@ class ClansByGrivin extends Table
         return $huts;
     }
 
+    /*
+     * removeHut()
+     */
+    function removeHut($hut_id)
+    {
+        $sql = "DELETE FROM hut WHERE hut_id = $hut_id";
+        self::DbQuery($sql);
+    }
+
 
     /*
      * apply village destruction (due to epoch/region malus)
@@ -502,9 +511,19 @@ class ClansByGrivin extends Table
     {
         //TODO: self::checkAction( 'makeVillage' );
         //TODO: check movement is possible...
-        //TODO: manage village dispute (if 5 colors, all single huts are removed)
-        single_huts = listSingleHuts($territory_id);
-        //TODO: notify single huts destruction
+        $single_huts = $this->listSingleHuts($territory_id);
+        if (count($single_huts) > 0) {
+            self::notifyAllPlayers("villageDispute", clienttranslate('There is a village dispute !'), array(
+//                'player_id' => $player_id,
+//                'player_name' => self::getActivePlayerName(),
+                'src_territory_id' => $territory_id,
+                'huts' => $single_huts,
+            ));
+            foreach ($single_huts as $hut_id) {
+                $this->removeHut($hut_id);
+            }
+        }
+
         //TODO: manage season (bonus or malus)
         //TODO: notify village destruction or construction
         //TODO: notify bonus token
