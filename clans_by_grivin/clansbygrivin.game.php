@@ -255,6 +255,18 @@ class ClansByGrivin extends Table
     }
 
 
+    /*
+     * mark a village resolved
+     */
+    function resolveVillage($territory_id)
+    {
+        //TODO:sql binding ?
+        $current_player_id = self::getCurrentPlayerId();    // !! We must only return information visible by this player !!
+        $sql = "UPDATE village SET resolved=TRUE WHERE territory_id=$territory_id";
+        self::DbQuery($sql);
+    }
+
+
     // Get the list of possible moves (x => y => true)
     function getSourceTerritories()
     {
@@ -451,9 +463,20 @@ class ClansByGrivin extends Table
 
     }
 
+
     /*
      * makeVillage()
      */
+    function makeVillage($territory_id)
+    {
+        //TODO: self::checkAction( 'makeVillage' );
+        //TODO: check movement is possible...
+        //TODO: manage village dispute (if 5 colors, all single huts are removed)
+        //TODO: notify single huts destruction
+        //TODO: manage season (bonus or malus)
+        //TODO: notify village destruction or construction
+        //TODO: notify bonus token
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////
