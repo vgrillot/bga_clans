@@ -332,13 +332,13 @@ class ClansByGrivin extends Table
      *
      *   to list all new villages, for all source neighbor, check if they still have other neighbor
      */
-    function listNewVillage($territories, $src_territory_id)
+    function listNewVillage($src_territory_id)
     {
         $villages = array();
         foreach ($this->getNeighborTerritories($src_territory_id) as $neighbor_territory_id) {
             $has_neighbor = False;
             foreach ($this->getNeighborTerritories($neighbor_territory_id) as $neighbor_neighbor_territory_id) {
-                if (key_exists($neighbor_neighbor_territory_id, $territories)) {
+                if (key_exists($neighbor_neighbor_territory_id, $this->territories)) {
                     $has_neighbor = True;
                 }
             }
@@ -476,21 +476,22 @@ class ClansByGrivin extends Table
         ));
 
         //TODO: listNewVillage
-        $new_village = 0; //!!!TEMP
+        $new_villages = self::listNewVillage();
 
-        if ($new_village > 1) {
+        if (count($new_villages) > 1) {
             // There is more than one village, a decision should be taken
             // TODO:can ignore village selection for creation if there is no impact from epoch bonus.
             $this->gamestate->nextState('selectVillage');
             return;
-        } elseif ($new_village == 1) {
-            // TODO : apply the village and continue to the next player
+        } elseif (count($new_villages) == 1) {
+            // There is only one new village, can be created directly *
+            // Before moving to next player...
+            $territory_id = $new_villages[0];
+            $this->makeVillage($territory_id);
         }
-
 
         // Then, go to the next state
         $this->gamestate->nextState('nextPlayer');
-
     }
 
 
