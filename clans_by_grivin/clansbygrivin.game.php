@@ -376,6 +376,21 @@ class ClansByGrivin extends Table
         return $huts;
     }
 
+    /*
+     * hasAllColors()
+     * return True if all colors are present in the same territory, do prepare the dispute...
+     */
+    private function hasAllColors($territory_id)
+    {
+//        echo ("hasAllColors($territory_id)");
+        $sql = "SELECT COUNT(DISTINCT color_id) AS colors " .
+            "FROM hut " .
+            "WHERE territory_id = $territory_id ";
+
+        $qry = self::getUniqueValueFromDB($sql);
+        return $qry == 5;
+    }
+
 
     /*
      * removeHut()
@@ -514,16 +529,20 @@ class ClansByGrivin extends Table
 
         //TODO: self::checkAction( 'makeVillage' );
         //TODO: check movement is possible...
-        $single_huts = $this->listSingleHuts($territory_id);
-        if (count($single_huts) > 0) {
-            self::notifyAllPlayers("villageDispute", clienttranslate('There is a village dispute !'), array(
-//                'player_id' => $player_id,
-//                'player_name' => self::getActivePlayerName(),
-                'src_territory_id' => $territory_id,
-                'huts' => $single_huts,
-            ));
-            foreach ($single_huts as $hut_id) {
-                $this->removeHut($hut_id);
+
+        // Village dispute if there is all color present in the same territory:
+        if ($this->hasAllColors($territory_id)) {
+            $single_huts = $this->listSingleHuts($territory_id);
+            if (count($single_huts) > 0) {
+                self::notifyAllPlayers("villageDispute", clienttranslate('There is a village dispute !'), array(
+                    //                'player_id' => $player_id,
+                    //                'player_name' => self::getActivePlayerName(),
+                    'src_territory_id' => $territory_id,
+                    'huts' => $single_huts,
+                ));
+                foreach ($single_huts as $hut_id) {
+                    $this->removeHut($hut_id);
+                }
             }
         }
 
@@ -533,7 +552,6 @@ class ClansByGrivin extends Table
             'player_id' => $player_id,
             'player_name' => self::getActivePlayerName(),
             'src_territory_id' => $territory_id,
-            'huts' => $single_huts,
         ));
         //TODO: notify bonus token
     }
@@ -715,4 +733,5 @@ class ClansByGrivin extends Table
 
 
     }
+
 }
