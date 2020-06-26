@@ -244,7 +244,7 @@ $this->territories = array(
 
     16 => array(
         "land_type" => _MOUNTAIN,
-        "neighbor" => array(17, 20),
+        "neighbor" => array(17, 20, 22),
         "region" => 4,
         "x" => 949,
         "y" => 266,
