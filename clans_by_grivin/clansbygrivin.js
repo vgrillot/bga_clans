@@ -349,6 +349,8 @@ define([
 
                 dojo.subscribe('villageDestroyed', this, 'notif_villageDestroyed');
                 this.notifqueue.setSynchronous('villageDestroyed', 3000);
+
+                dojo.subscribe('updateScore', this, 'notif_updateScore');
             },
 
             // TODO: from this point and below, you can write your game notifications handling methods
@@ -412,6 +414,19 @@ define([
             notif_villageDestroyed(notif) {
                 console.log('notif_villageDestroyed');
                 console.log(notif);
+
+            },
+
+            /*
+             *
+             */
+            notif_updateScore(notif) {
+                console.log('notif_udpateScore');
+                console.log(notif);
+                debugger;
+                for (var i in notif.args.score) {
+                    score = "score_" + notif.args.score[i];
+                }
 
             },
 

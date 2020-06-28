@@ -84,6 +84,12 @@
     position: absolute;
 }
 
+.hut_score {
+    padding: 5px;
+    color: #FFFFFF;
+    float: left;
+}
+
 /*
 * for debug purposes...
  */
@@ -120,7 +126,8 @@
     height: 20px;
     /*position: absolute;*/
     position: relative; /* try to have huts side by side*/
-    border-radius: 50%
+    border-radius: 50%;
+    filter: drop-shadow(0px 0px 5px #FFFFFF);
 }
 
 /*.house_black {*/
@@ -145,7 +152,7 @@
 
 /*.house_blue {*/
 .color_4 {
-    background: darkblue;
+    background: dodgerblue;
 }
 
 

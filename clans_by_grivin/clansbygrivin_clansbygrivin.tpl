@@ -41,10 +41,14 @@
     <div id="epoqs">
     </div>
 
-    <div id="scores">
-    </div>
+
 </div>
 
+<div id="scores">
+    <!-- BEGIN hut_score -->
+    <div id="hut_score_{id}" class="hut_score color_{color}">0</div>
+    <!-- END hut_score -->
+</div>
 
 <script type="text/javascript">
 
@@ -53,7 +57,6 @@
     //never use something like ${id}... there is a global conflict somewhere.
 
     var jstpl_hut = '<div class="hut color_${hut_color}" id="hut_${hut_id}"></div>';
-
 
 </script>
 

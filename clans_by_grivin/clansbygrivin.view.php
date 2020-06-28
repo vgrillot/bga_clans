@@ -90,6 +90,13 @@ class view_clansbygrivin_clansbygrivin extends game_view
 //            }
         }
 
+        $this->page->begin_block("clansbygrivin_clansbygrivin", "hut_score");
+        foreach ($this->game->colors as $color_id => $color) {
+            $this->page->insert_block("hut_score", array(
+                'id' => $color_id,
+                'color' => $color_id
+            ));
+        }
 
         /*********** Do not change anything below this line  ************/
     }
