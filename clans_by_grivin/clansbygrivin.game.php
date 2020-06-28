@@ -110,7 +110,8 @@ class ClansByGrivin extends Table
 
         // TODO: reset seasons, put all village tokens
 
-        // TODO: reset scores
+        // reset scores for all colors
+        $this->setupScores();
 
 
         // Activate first player (which is in general a good idea :) )
@@ -166,6 +167,20 @@ class ClansByGrivin extends Table
         $sql .= implode($values, ',');
         self::DbQuery($sql);
     }
+
+    /*
+     * setupScores()
+     */
+    private function setupScores()
+    {
+        $sql = "INSERT INTO score (color_id, score) VALUES ";
+        foreach ($this->colors as $color_id => $color) {
+            $values[] = sprintf("(%d, 0)", $color_id);
+        }
+        $sql .= implode($values, ',');
+        self::DbQuery($sql);
+    }
+
 
     /*
         getAllDatas: 
@@ -733,5 +748,6 @@ class ClansByGrivin extends Table
 
 
     }
+
 
 }

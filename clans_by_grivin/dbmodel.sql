@@ -75,3 +75,14 @@ CREATE TABLE IF NOT EXISTS village
     PRIMARY KEY (village_id)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1;
+
+
+--
+-- SCORE
+--
+CREATE TABLE IF NOT EXISTS score
+(
+    color_id SMALLINT NOT NULL,
+    score    SMALLINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (color_id)
+) ENGINE = InnoDB;
