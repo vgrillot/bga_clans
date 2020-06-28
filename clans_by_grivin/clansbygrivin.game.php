@@ -168,6 +168,7 @@ class ClansByGrivin extends Table
         self::DbQuery($sql);
     }
 
+
     /*
      * setupScores()
      */
@@ -426,14 +427,6 @@ class ClansByGrivin extends Table
         self::DbQuery($sql);
     }
 
-    /*
-     * apply village construction
-     */
-    function updateVillageConstruction($territory_id)
-    {
-
-    }
-
 
     /*
      *  apply huts move
@@ -452,6 +445,43 @@ class ClansByGrivin extends Table
         $this->updateTerritoriesHutCount();
         return $huts;
     }
+
+
+    /*
+     *
+     * updateScores()
+     *
+     * compute the score of the current territory and update db
+     *
+     * all present colors scores the count of hut in the new village + eqpoch bonus
+     *
+     */
+    private function updateScores($territory_id, $bonus)
+    {
+        $village_score = $this->territories[$territory_id]['huts'] + $bonus;
+        $sql =
+            "UPDATE score s " .
+            "SET s.score = s.score + $village_score " .
+            "WHERE s.color_id IN ( " .
+            "  SELECT DISTINCT color_id " .
+            "  FROM hut " .
+            "  WHERE territory_id = $territory_id " .
+            ")";
+        self::DbQuery($sql);
+        return $village_score;
+    }
+
+
+    /*
+     * getScores
+     */
+    private function getScores()
+    {
+        $sql = "SELECT * FROM score ORDER BY color_id";
+        $qry = self::getObjectListFromDB($sql);
+        return $qry;
+    }
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -546,6 +576,7 @@ class ClansByGrivin extends Table
         //TODO: check movement is possible...
 
         // Village dispute if there is all color present in the same territory:
+        //TODO:rule to check: what if we create a village with 5 huts of 5 colors : destruction or nothing ?
         if ($this->hasAllColors($territory_id)) {
             $single_huts = $this->listSingleHuts($territory_id);
             if (count($single_huts) > 0) {
@@ -559,16 +590,31 @@ class ClansByGrivin extends Table
                     $this->removeHut($hut_id);
                 }
             }
+            // need to refresh in memory-map
+            $this->updateTerritoriesHutCount();
         }
 
-        //TODO: manage season (bonus or malus)
-        //TODO: notify village destruction or construction
-        self::notifyAllPlayers("villageBuilt", clienttranslate('${player_name} build a village'), array(
-            'player_id' => $player_id,
-            'player_name' => self::getActivePlayerName(),
-            'src_territory_id' => $territory_id,
-        ));
+        //TODO: manage season (bonus or destruction)
+        $bonus = 0; // no bonus
+        $destruction = False; // no multiplier
+
         //TODO: notify bonus token
+
+        if ($destruction) {
+            //TODO: notify village destruction
+        } else {
+            // Compute new score
+            $village_score = $this->updateScores($territory_id, $bonus);
+            $scores = $this->getScores();
+            self::notifyAllPlayers("villageBuilt", clienttranslate('${player_name} build a village (${village_score} points)'), array(
+                'player_id' => $player_id,
+                'player_name' => self::getActivePlayerName(),
+                'src_territory_id' => $territory_id,
+                'village_score' => $village_score,
+                'scores' => $scores,
+            ));
+        }
+
     }
 
 
