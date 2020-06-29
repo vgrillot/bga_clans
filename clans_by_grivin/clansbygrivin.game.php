@@ -606,11 +606,14 @@ class ClansByGrivin extends Table
             // Compute new score
             $village_score = $this->updateScores($territory_id, $bonus);
             $scores = $this->getScores();
-            self::notifyAllPlayers("villageBuilt", clienttranslate('${player_name} build a village (${village_score} points)'), array(
+            self::notifyAllPlayers("villageBuilt", clienttranslate('${player_name} build a village (${village_score} points) at ${src_territory_id}'), array(
                 'player_id' => $player_id,
                 'player_name' => self::getActivePlayerName(),
                 'src_territory_id' => $territory_id,
                 'village_score' => $village_score,
+                'scores' => $scores,
+            ));
+            self::notifyAllPlayers("updateScore", '', array(
                 'scores' => $scores,
             ));
         }

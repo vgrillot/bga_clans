@@ -423,9 +423,10 @@ define([
             notif_updateScore(notif) {
                 console.log('notif_udpateScore');
                 console.log(notif);
-                debugger;
-                for (var i in notif.args.score) {
-                    score = "score_" + notif.args.score[i];
+                for (var i in notif.args.scores) {
+                    score_id = "hut_score_" + notif.args.scores[i]["color_id"];
+                    value = notif.args.scores[i]["score"];
+                    $(score_id).innerText = value;
                 }
 
             },
