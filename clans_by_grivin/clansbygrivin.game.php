@@ -342,11 +342,24 @@ class ClansByGrivin extends Table
         return $moves;
     }
 
+    /*
+     * getVillages()
+     * - list pending village creation if there is more than one on the same turn
+     */
+    function getVillages()
+    {
+        $villages = array();
+        //TODO
+        return $villages;
+    }
+
 
     /*
      *  check if a move create a village (or more)
      *
      *   to list all new villages, for all source neighbor, check if they still have other neighbor
+     *
+     *   return array of territory_id
      */
     function listNewVillage($src_territory_id)
     {
@@ -551,8 +564,15 @@ class ClansByGrivin extends Table
         if (count($new_villages) > 1) {
             // There is more than one village, a decision should be taken
             // TODO:can ignore village selection for creation if there is no impact from epoch bonus.
-            $this->gamestate->nextState('selectVillage');
-            return;
+
+            //!!!TEMP : make an arbitrary selection
+            foreach ($new_villages as $territory_id) {
+                $this->makeVillage($territory_id);
+            }
+
+            // TODO:let the user select the village creation order
+            // $this->gamestate->nextState('selectVillage');
+            // return;
         } elseif (count($new_villages) == 1) {
             // There is only one new village, can be created directly *
             // Before moving to next player...
