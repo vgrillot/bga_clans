@@ -423,7 +423,7 @@ define([
             notif_updateScore(notif) {
                 console.log('notif_udpateScore');
                 console.log(notif);
-                this.displayScores(notig.args.scores);
+                this.displayScores(notif.args.scores);
             },
 
             /*
