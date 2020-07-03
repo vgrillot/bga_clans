@@ -222,7 +222,7 @@ class ClansByGrivin extends Table
     */
     function getGameProgression()
     {
-        // TODO: compute and return the game progression
+        // TODO: compute and return the game progression  #15
 
         return 0;
     }
@@ -350,7 +350,7 @@ class ClansByGrivin extends Table
     function getVillages()
     {
         $villages = array();
-        //TODO
+        //TODO: getVillages not implemented #6
         return $villages;
     }
 
@@ -541,7 +541,7 @@ class ClansByGrivin extends Table
     {
 
         // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
-        //TODO: self::checkAction( 'moveHuts' );
+        //TODO: self::checkAction( 'moveHuts' ); #16
         //TODO: check movement is possible...
 
         $huts = $this->updateMoveHuts($src_territory_id, $dst_territory_id);
@@ -571,7 +571,7 @@ class ClansByGrivin extends Table
                 $this->makeVillage($territory_id);
             }
 
-            // TODO:let the user select the village creation order
+            // TODO:let the user select the village creation order #6
             // $this->gamestate->nextState('selectVillage');
             // return;
         } elseif (count($new_villages) == 1) {
@@ -593,11 +593,11 @@ class ClansByGrivin extends Table
     {
         $player_id = self::getActivePlayerId();
 
-        //TODO: self::checkAction( 'makeVillage' );
+        //TODO: self::checkAction( 'makeVillage' ); #16
         //TODO: check movement is possible...
 
         // Village dispute if there is all color present in the same territory:
-        //TODO:rule to check: what if we create a village with 5 huts of 5 colors : destruction or nothing ?
+        //TODO:rule to check: what if we create a village with 5 huts of 5 colors : destruction or nothing ? #17
         if ($this->hasAllColors($territory_id)) {
             $single_huts = $this->listSingleHuts($territory_id);
             if (count($single_huts) > 0) {
@@ -615,7 +615,7 @@ class ClansByGrivin extends Table
             $this->updateTerritoriesHutCount();
         }
 
-        //TODO: manage season (bonus or destruction)
+        //TODO: manage season (bonus or destruction) #
         $bonus = 0; // no bonus
         $destruction = False; // no multiplier
 
@@ -712,7 +712,7 @@ class ClansByGrivin extends Table
         // Active next player
         $player_id = self::activeNextPlayer();
 
-        // TODO : check if there is still some epoch to play...
+        // TODO : check if there is still some epoch to play and some move possible... #4
         $remainingEpoch = 5; //!!!TEMP
 
         if ($remainingEpoch == 0) {
@@ -730,8 +730,8 @@ class ClansByGrivin extends Table
 
     function stGameEnd()
     {
-        // TODO: reveal secret colors
-        // TODO: attribute scores
+        // TODO: reveal secret colors #5
+        // TODO: attribute scores #5
     }
 
 

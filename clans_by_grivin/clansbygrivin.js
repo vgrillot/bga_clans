@@ -353,22 +353,6 @@ define([
                 dojo.subscribe('updateScore', this, 'notif_updateScore');
             },
 
-            // TODO: from this point and below, you can write your game notifications handling methods
-
-            /*
-            Example:
-
-            notif_cardPlayed: function( notif )
-            {
-                console.log( 'notif_cardPlayed' );
-                console.log( notif );
-
-                // Note: notif.args contains the arguments specified during you "notifyAllPlayers" / "notifyPlayer" PHP call
-
-                // TODO: play the card in the user interface.
-            },
-
-            */
 
             /*
              * move huts...
@@ -443,7 +427,7 @@ define([
             remove_hut(hut_id) {
                 console.log('remove_hut');
                 console.log(hut_id);
-                //TODO:slide out of board
+                //TODO:slide out of board #18
                 // this.slideToObjectPos(hut_id, territory_id, x, y).play();
                 this.fadeOutAndDestroy(hut_id);
 
