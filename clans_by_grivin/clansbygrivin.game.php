@@ -206,6 +206,7 @@ class ClansByGrivin extends Table
         // Get all huts position, if they have not been removed
         $sql = "SELECT hut_id, color_id, territory_id FROM hut WHERE territory_id IS NOT NULL ORDER BY territory_id, color_id";
         $result['board'] = self::getObjectListFromDB($sql);
+        $result['scores'] = $this->getScores();
         return $result;
     }
 
