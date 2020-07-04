@@ -86,3 +86,18 @@ CREATE TABLE IF NOT EXISTS score
     score    SMALLINT NOT NULL DEFAULT 0,
     PRIMARY KEY (color_id)
 ) ENGINE = InnoDB;
+
+
+--
+-- EPOCH
+--
+-- represent village token taken when a village is creatd, or available on board (player_id = NULL)
+--
+-- epoch_id order is important, related to material inc for bonus/malus epoch, not stored in db
+-- played_id : who took it !
+--
+CREATE TABLE IF NOT EXISTS epoch
+(
+    epoch_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    played_id SMALLINT NULL
+) ENGINE = InnnoDB;
