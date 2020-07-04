@@ -63,6 +63,8 @@ define([
                     this.addHutOnBoard(hut.hut_id, hut.territory_id, hut.color_id);
                 }
 
+                // Display score
+                this.displayScores(gamedatas.scores);
 
                 // Setup game notifications to handle (see "setupNotifications" method below)
                 this.setupNotifications();
