@@ -273,14 +273,27 @@ class ClansByGrivin extends Table
 
 
     /*
-     * mark a village resolved
+     * mark a village as done
+     *
+     * return id of token_id
      */
-    function resolveVillage($territory_id)
+    function updateVillage($territory_id, $destruction, $epoch_id)
     {
-        //TODO:sql binding ?
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return information visible by this player !!
-        $sql = "UPDATE village SET resolved=TRUE WHERE territory_id=$territory_id";
+        // calc the token_id,
+        $sql = "SELECT COUNT(*) + 1 as new_token_id FROM village WHERE resolved = TRUE";
+        $village_token_id = self::getUniqueValueFromDB($sql);
+
+        $current_player_id = self::getCurrentPlayerId();
+        $sql =
+            "UPDATE village " .
+            "SET resolved = TRUE " .
+            ",   epoch_id = $epoch_id " .
+            ",   token_id = $village_token_id ";
+        if ($destruction)
+            $sql .= ", destroyed = TRUE ";
+        $sql .= "WHERE territory_id = $territory_id";
         self::DbQuery($sql);
+        return $village_token_id;
     }
 
 
@@ -620,6 +633,7 @@ class ClansByGrivin extends Table
         $destruction = False; // no multiplier
 
         //TODO: notify bonus token
+
 
         if ($destruction) {
             //TODO: notify village destruction
