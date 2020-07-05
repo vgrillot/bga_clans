@@ -598,7 +598,8 @@ class ClansByGrivin extends Table
         ));
 
         $new_villages = $this->listNewVillage($src_territory_id);
-//        $new_villages = [$dst_territory_id]; //!!!TEMP:force a village. ..
+        // insert village created
+        $this->insertVillages($new_villages);
 
         if (count($new_villages) > 1) {
             // There is more than one village, a decision should be taken
