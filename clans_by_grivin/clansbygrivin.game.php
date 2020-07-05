@@ -740,12 +740,9 @@ class ClansByGrivin extends Table
         // Active next player
         $player_id = self::activeNextPlayer();
 
-        // TODO : check if there is still some epoch to play and some move possible... #4
-
-        $remainingVillages = 12 -  $this->getVillageCount();
-
+        // Check if there is still village token available
+        $remainingVillages = $this->village_token_count - $this->getVillageCount();
         if ($remainingVillages <= 0) {
-
             $this->gamestate->nextState('endGame');
             return;
         }
