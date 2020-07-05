@@ -54,6 +54,17 @@ class ClansByGrivin extends Table
     }
 
     /*
+     * notifyDebug
+     *
+     * send to js client a message for debug purposes...
+     *
+     */
+    function notifyDebug($msg, $values = array())
+    {
+        self::notifyAllPlayers("debug", $msg, $values);
+    }
+
+    /*
         setupNewGame:
         
         This method is called only once, when a new game is launched.
@@ -746,11 +757,7 @@ class ClansByGrivin extends Table
         // Check if there is possible moves
         $moves_count = count($this->getPossibleMoves());
 
-        $s = sprintf("next player ?  rv=$remainingVillages mc=$moves_count");
-        self::notifyAllPlayers("debug", $s, array(
-            'rv' => $remainingVillages,
-            'mc' => $moves_count,
-        ));
+        self::notifyDebug("debug", sprintf("next player ?  rv=$remainingVillages mc=$moves_count"));
 
         if ($remainingVillages <= 0 || $moves_count == 0) {
             $this->gamestate->nextState('endGame');
