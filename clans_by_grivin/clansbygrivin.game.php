@@ -42,6 +42,7 @@ class ClansByGrivin extends Table
         ));
     }
 
+
     protected function getGameName()
     {
         // Used for translations and stuff. Please do not modify.
@@ -87,14 +88,14 @@ class ClansByGrivin extends Table
         $values = array();
         foreach ($players as $player_id => $player) {
             // Pick a random color secret color for the player
-            $secret_color = array_shift($secret_colors);
+            $secret_color_id = array_shift($secret_colors);
             $values[] = sprintf("('%s','%s','%s','%s','%s', %d)",
                 $player_id,
                 $public_color,
                 $player['player_canal'],
                 addslashes($player['player_name']),
                 addslashes($player['player_avatar']),
-                $secret_color
+                $secret_color_id
             );
         }
         $sql .= implode($values, ',');
@@ -123,7 +124,6 @@ class ClansByGrivin extends Table
 
         // reset scores for all colors
         $this->setupScores();
-
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -338,11 +338,20 @@ class ClansByGrivin extends Table
     /*
      * list all neighbor of a territory
      */
-    function getNeighborTerritories($territory_id)
+    private function getNeighborTerritories($territory_id)
     {
         return $this->territories[$territory_id]['neighbor'];
     }
 
+
+    /*
+     * getSecretColor
+     */
+    function getSecretColor($player_id)
+    {
+        $sql = "SELECT player_secret_color_id FROM player WHERE player_id = $player_id";
+        return self::getUniqueValueFromDB($sql);
+    }
 
     /*
      * list all possible moves:
@@ -683,6 +692,22 @@ class ClansByGrivin extends Table
 
     }
 
+    /*
+     * revealHiddenColors
+     */
+    private function revealAllSecretColors()
+    {
+        $sql = 'UPDATE player SET player_color = CASE ';
+        foreach ($this->colors as $color_id => $color) {
+            $sql.= sprintf('WHEN player_secret_color_id = %d THEN "%s" ', $color_id, $color['color']);
+        }
+        $sql .= 'END';
+        self::DbQuery($sql);
+
+        // reload player information to display colors
+        self::reloadPlayersBasicInfos();
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state arguments
@@ -711,12 +736,22 @@ class ClansByGrivin extends Table
     }    
     */
 
+    function argSecretColor()
+    {
+        return array(
+            'secretColor' => "*secret*"
+//            'secretColor' => $this->getSecsretColor()
+        );
+    }
+
+
     function argPlayerTurn()
     {
         return array(
             'getPossibleMoves' => self::getPossibleMoves()
         );
     }
+
 
     function argSelectVillage()
     {
@@ -749,6 +784,28 @@ class ClansByGrivin extends Table
     */
 
 
+    /*
+     * stSecretColor
+     *
+     * Notify player about his secret color
+     */
+    function stSecretColor()
+    {
+        $players = self::loadPlayersBasicInfos();
+        foreach ($players as $player_id => $player) {
+            $color_id = $this->getSecretColor($player_id);
+            $color = $this->colors[$color_id];
+            $color_name = $color['name'];
+//            self::notifyDebug("stSecretColor $player_id -> $color_name", array($player_id, $color_id));
+            self::notifyPlayer($player_id, 'revealMySecretColors', '', array('secretColor' => array($color_id, $color)));
+        }
+        $this->gamestate->nextState("");
+    }
+
+
+    /*
+     * stNextPlayer
+     */
     function stNextPlayer()
     {
         // Active next player
@@ -772,12 +829,15 @@ class ClansByGrivin extends Table
         // This player can play. Give him some extra time
         self::giveExtraTime($player_id);
         $this->gamestate->nextState('playerTurn');
-
     }
+
 
     function stGameEnd()
     {
-        // TODO: reveal secret colors #5
+        self::notifyDebug("End of game...");
+        // reveal secret colors
+        $this->revealAllSecretColors();
+
         // TODO: attribute scores #5
     }
 
@@ -865,6 +925,5 @@ class ClansByGrivin extends Table
 
 
     }
-
 
 }

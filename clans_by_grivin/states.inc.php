@@ -58,9 +58,20 @@ $machinestates = array(
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array("" => 10)
+        "transitions" => array("" => 9)
     ),
 
+    /*
+     *  Distribute secret colors
+     */
+    9 => array(
+        "name" => "secretColor",
+        "description" => "",
+        "type" => "game",
+        "args" => "argSecretColor",
+        "action" => "stSecretColor",
+        "transitions" => array("" => 10)
+    ),
 
     /*
      *  Select the source of the move...

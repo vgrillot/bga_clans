@@ -354,6 +354,9 @@ define([
 
                 dojo.subscribe('updateScore', this, 'notif_updateScore');
 
+                dojo.subscribe('revealMySecretColors', this, 'notif_revealMySecretColors');
+                dojo.subscribe('revealAllSecretColors', this, 'notif_revealAllSecretColors');
+
                 //!!!for debug purposes:
                 dojo.subscribe('debug', this, 'notif_debug');
             },
@@ -416,6 +419,28 @@ define([
             },
 
             /*
+             * notif_revealMySecretColors
+             *
+             * reveal all colors of all players
+             */
+            notif_revealMySecretColors(notif) {
+                console.log('notif_revealMySecretColors');
+                console.log(notif);
+
+            },
+
+            /*
+             * notif_revealAllSecretColors
+             *
+             * reveal all colors of all players
+             */
+            notif_revealAllSecretColors(notif) {
+                console.log('notif_revealAllSecretColors');
+                console.log(notif);
+
+            },
+
+            /*
              * notif_debug()
              */
             notif_debug(notif) {
@@ -443,7 +468,6 @@ define([
                 //TODO:slide out of board #18
                 // this.slideToObjectPos(hut_id, territory_id, x, y).play();
                 this.fadeOutAndDestroy(hut_id);
-
             },
 
 
