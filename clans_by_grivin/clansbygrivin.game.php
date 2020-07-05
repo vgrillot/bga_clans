@@ -54,6 +54,17 @@ class ClansByGrivin extends Table
     }
 
     /*
+     * notifyDebug
+     *
+     * send to js client a message for debug purposes...
+     *
+     */
+    function notifyDebug($msg, $values = array())
+    {
+        self::notifyAllPlayers("debug", $msg, $values);
+    }
+
+    /*
         setupNewGame:
         
         This method is called only once, when a new game is launched.
@@ -273,14 +284,41 @@ class ClansByGrivin extends Table
 
 
     /*
-     * mark a village resolved
+     * mark a village as done
+     *
+     * return id of token_id
      */
-    function resolveVillage($territory_id)
+    function updateVillage($territory_id, $destruction, $epoch_id)
     {
-        //TODO:sql binding ?
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return information visible by this player !!
-        $sql = "UPDATE village SET resolved=TRUE WHERE territory_id=$territory_id";
+        // calc the token_id,
+        $sql = "SELECT COUNT(*) + 1 as new_token_id FROM village WHERE resolved = TRUE";
+        $village_token_id = self::getUniqueValueFromDB($sql);
+
+        $current_player_id = self::getCurrentPlayerId();
+        $sql =
+            "UPDATE village " .
+            "SET resolved = TRUE " .
+            ",   epoch_id = $epoch_id " .
+            ",   token_id = $village_token_id ";
+        if ($destruction)
+            $sql .= ", destroyed = TRUE ";
+        $sql .= "WHERE territory_id = $territory_id";
         self::DbQuery($sql);
+        return $village_token_id;
+    }
+
+
+    /*
+     * getVillageCount
+     *
+     * return count of village, already resolved only, destroyed or not
+     * can be use asalready  distributed village token count
+     *
+     */
+    function getVillageCount()
+    {
+        $sql = "SELECT COUNT(*) FROM village WHERE resolved = TRUE";
+        return self::getUniqueValueFromDB($sql);
     }
 
 
@@ -560,7 +598,8 @@ class ClansByGrivin extends Table
         ));
 
         $new_villages = $this->listNewVillage($src_territory_id);
-//        $new_villages = [$dst_territory_id]; //!!!TEMP:force a village. ..
+        // insert village created
+        $this->insertVillages($new_villages);
 
         if (count($new_villages) > 1) {
             // There is more than one village, a decision should be taken
@@ -616,10 +655,13 @@ class ClansByGrivin extends Table
         }
 
         //TODO: manage season (bonus or destruction) #
+        $epoch_id = 0; // for later stats
         $bonus = 0; // no bonus
         $destruction = False; // no multiplier
 
+        $token_id = $this->updateVillage($territory_id, $destruction, $epoch_id);
         //TODO: notify bonus token
+
 
         if ($destruction) {
             //TODO: notify village destruction
@@ -712,12 +754,17 @@ class ClansByGrivin extends Table
         // Active next player
         $player_id = self::activeNextPlayer();
 
-        // TODO : check if there is still some epoch to play and some move possible... #4
-        $remainingEpoch = 5; //!!!TEMP
+        // Check if there is still village token available
+        $remainingVillages = $this->village_token_count - $this->getVillageCount();
+        if ($remainingVillages <= 0)
+            self::notifyDebug("There is no more village token !");
 
-        if ($remainingEpoch == 0) {
-            // Index 0 has not been set => there's no more free place on the board !
-            // => end of the game
+        // Check if there is possible moves
+        $moves_count = count($this->getPossibleMoves());
+        if ($moves_count == 0)
+            self::notifyDebug("No more moves !");
+
+        if ($remainingVillages <= 0 || $moves_count == 0) {
             $this->gamestate->nextState('endGame');
             return;
         }
