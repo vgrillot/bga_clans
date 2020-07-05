@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS hut
 CREATE TABLE IF NOT EXISTS village
 (
     village_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    player_id    SMALLINT          NOT NULL,
+    player_id    INT               NOT NULL,
     territory_id TINYINT UNSIGNED  NULL,
     epoch_id     TINYINT UNSIGNED  NULL,
     token_id     TINYINT UNSIGNED  NULL,
