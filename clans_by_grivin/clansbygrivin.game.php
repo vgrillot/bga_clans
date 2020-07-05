@@ -655,9 +655,11 @@ class ClansByGrivin extends Table
         }
 
         //TODO: manage season (bonus or destruction) #
+        $epoch_id = 0; // for later stats
         $bonus = 0; // no bonus
         $destruction = False; // no multiplier
 
+        $token_id = $this->updateVillage($territory_id, $destruction, $epoch_id);
         //TODO: notify bonus token
 
 
