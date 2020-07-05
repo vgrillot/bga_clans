@@ -742,7 +742,11 @@ class ClansByGrivin extends Table
 
         // Check if there is still village token available
         $remainingVillages = $this->village_token_count - $this->getVillageCount();
-        if ($remainingVillages <= 0) {
+
+        // Check if there is possible moves
+        $moves = $this->getPossibleMoves();
+
+        if ($remainingVillages <= 0 || count($moves) == 0) {
             $this->gamestate->nextState('endGame');
             return;
         }
