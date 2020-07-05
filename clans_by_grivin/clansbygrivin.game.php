@@ -744,9 +744,15 @@ class ClansByGrivin extends Table
         $remainingVillages = $this->village_token_count - $this->getVillageCount();
 
         // Check if there is possible moves
-        $moves = $this->getPossibleMoves();
+        $moves_count = count($this->getPossibleMoves());
 
-        if ($remainingVillages <= 0 || count($moves) == 0) {
+        $s = sprintf("next player ?  rv=$remainingVillages mc=$moves_count");
+        self::notifyAllPlayers("debug", $s, array(
+            'rv' => $remainingVillages,
+            'mc' => $moves_count,
+        ));
+
+        if ($remainingVillages <= 0 || $moves_count == 0) {
             $this->gamestate->nextState('endGame');
             return;
         }

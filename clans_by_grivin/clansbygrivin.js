@@ -353,6 +353,9 @@ define([
                 this.notifqueue.setSynchronous('villageDestroyed', 3000);
 
                 dojo.subscribe('updateScore', this, 'notif_updateScore');
+
+                //!!!for debug purposes:
+                dojo.subscribe('debug', this, 'notif_debug');
             },
 
 
@@ -410,6 +413,14 @@ define([
                 console.log('notif_udpateScore');
                 console.log(notif);
                 this.displayScores(notif.args.scores);
+            },
+
+            /*
+             * notif_debug()
+             */
+            notif_debug(notif) {
+                console.log('notif_debug');
+                console.log(notif);
             },
 
             /*
