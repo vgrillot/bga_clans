@@ -64,6 +64,9 @@ CREATE TABLE IF NOT EXISTS hut
 --
 -- player_id : who created the current village
 -- resolved : True if the bonus token has been attributed, huts destroyed if needed, village destroyed if needed, ...
+-- removed : To keep track of removed villages on unfavorable epoch
+-- epoch_id : For later statistics... (if any)
+-- token_id : village token, can it can be in different order of village_id on multiple village creation
 --
 --
 CREATE TABLE IF NOT EXISTS village
@@ -71,7 +74,10 @@ CREATE TABLE IF NOT EXISTS village
     village_id   SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     player_id    SMALLINT          NOT NULL,
     territory_id TINYINT UNSIGNED  NULL,
+    epoch_id     TINYINT UNSIGNED  NULL,
+    token_id     TINYINT UNSIGNED  NULL,
     resolved     BOOL              NOT NULL DEFAULT FALSE,
+    destroyed    BOOL              NOT NULL DEFAULT FALSE,
     PRIMARY KEY (village_id)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1;
@@ -86,3 +92,4 @@ CREATE TABLE IF NOT EXISTS score
     score    SMALLINT NOT NULL DEFAULT 0,
     PRIMARY KEY (color_id)
 ) ENGINE = InnoDB;
+

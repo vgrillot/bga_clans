@@ -19,7 +19,7 @@
  *
  */
 
-if (! defined('_FOREST')){
+if (!defined('_FOREST')) {
     define('_FOREST', 1);
     define('_MOUNTAIN', 2);
     define('_STEPPE', 3);
@@ -80,9 +80,9 @@ $this->land_types = array(
 
 
 /*
- *  Seasons
+ *  Epochs
  *
- *  There is 5 seasons,
+ *  There is 5 epochs,
  *  nb_turn : duration in round,
  *  favorite_land_type : describe which land type has a bonus to build a village
  *  hostile_land_type : describe which land type will destroy the build village
@@ -90,29 +90,29 @@ $this->land_types = array(
  *
  */
 
-$this->seasons = array(
+$this->epochs = array(
     1 => array(
         "nb_turn" => 4,
-        "favorite_land_type" => 1, //forrest
-        "hostile_land_type" => 2, //mountain
+        "favorite_land_type" => _FOREST,
+        "hostile_land_type" => _MOUNTAIN,
         "bonus" => 1,
     ),
     2 => array(
         "nb_turn" => 3,
-        "favorite_land_type" => 2, //mountain
-        "hostile_land_type" => 4, //grassland
+        "favorite_land_type" => _MOUNTAIN,
+        "hostile_land_type" => _GRASSLAND,
         "bonus" => 2,
     ),
     3 => array(
         "nb_turn" => 2,
-        "favorite_land_type" => 3, //steppe
-        "hostile_land_type" => 1, //forrest
+        "favorite_land_type" => _STEPPE,
+        "hostile_land_type" => _FOREST,
         "bonus" => 3,
     ),
     4 => array(
         "nb_turn" => 2,
-        "favorite_land_type" => 4, //grassland
-        "hostile_land_type" => 3, //steppe
+        "favorite_land_type" => _GRASSLAND,
+        "hostile_land_type" => _STEPPE,
         "bonus" => 4,
     ),
     5 => array(
@@ -123,6 +123,9 @@ $this->seasons = array(
     ),
 
 );
+
+// sum the village count
+$this->village_token_count = 4 + 3 + 2 + 2 + 1;
 
 
 /*
@@ -582,7 +585,6 @@ $this->territories = array(
 //        "y" => 507,
 //    ),
 );
-
 
 
 /*
