@@ -284,6 +284,20 @@ class ClansByGrivin extends Table
     }
 
 
+    /*
+     * getVillageCount
+     *
+     * return count of village, already resolved only, destroyed or not
+     * can be use asalready  distributed village token count
+     *
+     */
+    function getVillageCount()
+    {
+        $sql = "SELECT COUNT(*) FROM village WHERE resolved = TRUE";
+        return self::getUniqueValueFromDB($sql);
+    }
+
+
     // Get the list of possible moves (x => y => true)
     function getSourceTerritories()
     {
@@ -713,11 +727,11 @@ class ClansByGrivin extends Table
         $player_id = self::activeNextPlayer();
 
         // TODO : check if there is still some epoch to play and some move possible... #4
-        $remainingEpoch = 5; //!!!TEMP
 
-        if ($remainingEpoch == 0) {
-            // Index 0 has not been set => there's no more free place on the board !
-            // => end of the game
+        $remainingVillages = 12 -  $this->getVillageCount();
+
+        if ($remainingVillages <= 0) {
+
             $this->gamestate->nextState('endGame');
             return;
         }
