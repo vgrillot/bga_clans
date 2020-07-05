@@ -125,7 +125,8 @@ $this->epochs = array(
 );
 
 // sum the village count
-$this->village_token_count = 4 + 3 + 2 + 2 + 1;
+//$this->village_token_count = 4 + 3 + 2 + 2 + 1;
+$this->village_token_count = 2; //!!!TEMP:to check end of game quickly...
 
 
 /*
