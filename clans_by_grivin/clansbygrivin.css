@@ -96,8 +96,8 @@
 .inner_territory {
     visibility: visible;
     position: relative;
-    top:20px;
-    left:20px;
+    top: 20px;
+    left: 20px;
     background: yellow;
     color: darkblue;
     font-size: 50px;
@@ -161,4 +161,39 @@
     height: 60px;
     position: absolute;
     border-radius: 50%;
+}
+
+/*
+  hut_color are secret color token
+ */
+
+.hut_color {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    background-image: url('img/all_huts.jpg');
+}
+
+.hut_color_1 {
+    background-position: 0px 0px;
+}
+
+.hut_color_2 {
+    background-position: 150px 0px;
+}
+
+.hut_color_3 {
+    background-position: 300px 0px;
+}
+
+.hut_color_4 {
+    background-position: 450px 0px;
+}
+
+.hut_color_5 {
+    background-position: 600px 0px;
+}
+
+.hut_color_0 {
+    background-position: 750px 0px;
 }
