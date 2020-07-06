@@ -77,6 +77,14 @@ define([
                 }), 'player_board_' + player_id);
             },
 
+            updateSecretColorOnPlayer: function (player_id, color_id) {
+                debugger;
+                let player_secret_color = dojo.query('player_secret_color_' + player_id);
+                player_secret_color.removeClass('color_secret');
+                player_secret_color.replace('color_secret', 'color_' + color_id);
+                // dojo.replace('player_secret_color_' + player_id, 'color_' + color_id);
+            },
+
 
             addHutOnBoard: function (hut_id, territory_id, color_id) {
                 // console.log('addHutOnBoard(' + hut_id + ',' + territory_id + ',' + color_id + ')');
@@ -432,6 +440,8 @@ define([
             notif_revealMySecretColors(notif) {
                 console.log('notif_revealMySecretColors');
                 console.log(notif);
+                debugger;
+                this.updateSecretColorOnPlayer();
 
             },
 
