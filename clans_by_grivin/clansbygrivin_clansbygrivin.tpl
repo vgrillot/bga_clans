@@ -58,6 +58,9 @@
 
     var jstpl_hut = '<div class="hut color_${hut_color}" id="hut_${hut_id}"></div>';
 
+    //TODO: use a classic hut
+    var jstpl_playerSecretColor = '<div class="hut color_secret" id="player_secret_color_${player_id}"></div>';
+
 </script>
 
 {OVERALL_GAME_FOOTER}

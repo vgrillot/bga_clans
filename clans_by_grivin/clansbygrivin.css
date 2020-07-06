@@ -155,6 +155,11 @@
     background: dodgerblue;
 }
 
+/* secret color not revealed */
+.color_secret {
+    background: white;
+}
+
 
 .bonus {
     width: 60px;

@@ -48,16 +48,14 @@ define([
                 console.log("Starting game setup");
 
                 // Setting up player boards
-                // for( var player_id in gamedatas.players )
-                // {
-                //     var player = gamedatas.players[player_id];
-                //
-                //     // TODO: Setting up players boards if needed
-                // }
+                for (const player_id in gamedatas.players) {
+                    const player = gamedatas.players[player_id];
+                    // Add secret color token to player area
+                    this.addSecretColorOnPlayer(player_id);
+                }
 
                 // TODO: Set up your game interface here, according to "gamedatas"
                 // Add huts to board
-
                 console.log("board...");
                 for (const hut of gamedatas.board) {
                     this.addHutOnBoard(hut.hut_id, hut.territory_id, hut.color_id);
@@ -71,6 +69,14 @@ define([
 
                 console.log("Ending game setup");
             },
+
+
+            addSecretColorOnPlayer: function (player_id) {
+                dojo.place(this.format_block('jstpl_playerSecretColor', {
+                    player_id: player_id,
+                }), 'player_board_' + player_id);
+            },
+
 
             addHutOnBoard: function (hut_id, territory_id, color_id) {
                 // console.log('addHutOnBoard(' + hut_id + ',' + territory_id + ',' + color_id + ')');
