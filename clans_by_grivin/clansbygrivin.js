@@ -78,11 +78,15 @@ define([
             },
 
             updateSecretColorOnPlayer: function (player_id, color_id) {
-                debugger;
-                let player_secret_color = dojo.query('player_secret_color_' + player_id);
-                player_secret_color.removeClass('color_secret');
-                player_secret_color.replace('color_secret', 'color_' + color_id);
-                // dojo.replace('player_secret_color_' + player_id, 'color_' + color_id);
+                //TODO:Need a review: How to use DOJO to change a css class
+                // let player_secret_color = dojo.query('player_secret_color_' + player_id); -> doesn't return a single element
+                // player_secret_color.removeClass('color_secret');
+                // player_secret_color.addClass('color_' + color_id);
+
+                //using jquery
+                player_secret_color = $('player_secret_color_' + player_id);
+                player_secret_color.classList.remove('color_secret');
+                player_secret_color.classList.add('color_'+color_id);
             },
 
 
@@ -353,7 +357,6 @@ define([
                 // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
                 //
 
-                console.log("subscribe notif_moveHuts...")
                 dojo.subscribe('moveHuts', this, 'notif_moveHuts');
                 // this.notifqueue.setSynchronous( 'moveHuts', 3000 );
 
@@ -368,8 +371,8 @@ define([
 
                 dojo.subscribe('updateScore', this, 'notif_updateScore');
 
-                dojo.subscribe('revealMySecretColors', this, 'notif_revealMySecretColors');
-                dojo.subscribe('revealAllSecretColors', this, 'notif_revealAllSecretColors');
+                dojo.subscribe('revealMySecretColor', this, 'notif_revealMySecretColor');
+                // dojo.subscribe('revealAllSecretColors', this, 'notif_revealAllSecretColors');
 
                 //!!!for debug purposes:
                 dojo.subscribe('debug', this, 'notif_debug');
@@ -433,16 +436,14 @@ define([
             },
 
             /*
-             * notif_revealMySecretColors
+             * notif_revealMySecretColor
              *
              * reveal all colors of all players
              */
-            notif_revealMySecretColors(notif) {
-                console.log('notif_revealMySecretColors');
+            notif_revealMySecretColor(notif) {
+                console.log('notif_revealMySecretColor');
                 console.log(notif);
-                debugger;
-                this.updateSecretColorOnPlayer();
-
+                this.updateSecretColorOnPlayer(notif.args.player_id, notif.args.color_id);
             },
 
             /*
