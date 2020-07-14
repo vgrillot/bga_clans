@@ -704,7 +704,7 @@ class ClansByGrivin extends Table
     {
         $sql = 'UPDATE player SET player_color = CASE ';
         foreach ($this->colors as $color_id => $color) {
-            $sql.= sprintf('WHEN player_secret_color_id = %d THEN "%s" ', $color_id, $color['color']);
+            $sql .= sprintf('WHEN player_secret_color_id = %d THEN "%s" ', $color_id, $color['color']);
         }
         $sql .= 'END';
         self::DbQuery($sql);
@@ -740,6 +740,7 @@ class ClansByGrivin extends Table
         );
     }    
     */
+
 
     function argSecretColor()
     {
