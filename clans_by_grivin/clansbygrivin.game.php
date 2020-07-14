@@ -209,6 +209,9 @@ class ClansByGrivin extends Table
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
 
+        // static material
+        $result['colors'] = $this->colors;
+
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score FROM player ";
@@ -217,8 +220,12 @@ class ClansByGrivin extends Table
         // Get all huts position, if they have not been removed
         $sql = "SELECT hut_id, color_id, territory_id FROM hut WHERE territory_id IS NOT NULL ORDER BY territory_id, color_id";
         $result['board'] = self::getObjectListFromDB($sql);
+
+        // Current score
         $result['scores'] = $this->getScores();
 
+
+        //private information, secret color of current player
         $secret_color_id = $this->getSecretColor($current_player_id);
         $result['_private'] = array(
             "current_player_id" => $current_player_id,
@@ -723,9 +730,10 @@ class ClansByGrivin extends Table
                 'revealAllSecretColors',
                 '${player_name} was playing ${color_name}',
                 array(
+                    'player_id' => $p['player_id'],
                     'player_name' => $p['player_name'],
                     'player_color' => $p['player_color'],
-                    'player_id' => $p['player_id'],
+                    'color_id' => $p['player_secret_color_id'],
                     'color_name' => $this->colors[$p['player_secret_color_id']]['name'],
                 ));
         }

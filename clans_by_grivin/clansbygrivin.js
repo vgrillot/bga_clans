@@ -47,6 +47,9 @@ define([
             setup: function (gamedatas) {
                 console.log("Starting game setup");
 
+                // Save static material info
+                this.colors = gamedatas.colors;
+
                 // Setting up player boards
                 for (const player_id in gamedatas.players) {
                     const player = gamedatas.players[player_id];
@@ -88,10 +91,15 @@ define([
                 // player_secret_color.removeClass('color_secret');
                 // player_secret_color.addClass('color_' + color_id);
 
-                //using jquery
+                // using jquery
                 player_secret_color = $('player_secret_color_' + player_id);
                 player_secret_color.classList.remove('color_secret');
                 player_secret_color.classList.add('color_' + color_id);
+
+                // using jquery
+                player_name = $('player_name_' + player_id);
+                // first (and only) elem is href
+                player_name.firstElementChild.style.color = '#' + this.colors[color_id]['color'];
             },
 
 
@@ -462,7 +470,7 @@ define([
             notif_revealAllSecretColors(notif) {
                 console.log('notif_revealAllSecretColors');
                 console.log(notif);
-
+                this.updateSecretColorOnPlayer(notif.args.player_id, notif.args.color_id);
             },
 
             /*
