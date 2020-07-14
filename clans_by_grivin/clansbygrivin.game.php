@@ -796,17 +796,20 @@ class ClansByGrivin extends Table
     /*
      * stSecretColor
      *
-     * Notify player about his secret color
+     * Notify all players about their secret color when starting a game
      */
     function stSecretColor()
     {
+        //TODO:clienttranslate...
         $players = self::loadPlayersBasicInfos();
         foreach ($players as $player_id => $player) {
             $color_id = $this->getSecretColor($player_id);
             $color = $this->colors[$color_id];
             $color_name = $color['name'];
-//            self::notifyDebug("stSecretColor $player_id -> $color_name", array($player_id, $color_id));
-            self::notifyPlayer($player_id, 'revealMySecretColors', '', array('secretColor' => array($color_id, $color)));
+            self::notifyPlayer($player_id, 'revealMySecretColor',
+//TODO:                clienttranslate('${You} are playing ${color_name} color'),
+                '${You} are playing ${color_name} color',
+                array('You' => 'You', 'color_id' => $color_id, 'color_name' => $color_name));
         }
         $this->gamestate->nextState("");
     }
