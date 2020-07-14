@@ -67,6 +67,10 @@ define([
                 // Setup game notifications to handle (see "setupNotifications" method below)
                 this.setupNotifications();
 
+                this.updateSecretColorOnPlayer(
+                    gamedatas._private.current_player_id,
+                    gamedatas._private.secret_color_id);
+
                 console.log("Ending game setup");
             },
 
@@ -77,6 +81,7 @@ define([
                 }), 'player_board_' + player_id);
             },
 
+
             updateSecretColorOnPlayer: function (player_id, color_id) {
                 //TODO:Need a review: How to use DOJO to change a css class
                 // let player_secret_color = dojo.query('player_secret_color_' + player_id); -> doesn't return a single element
@@ -86,7 +91,7 @@ define([
                 //using jquery
                 player_secret_color = $('player_secret_color_' + player_id);
                 player_secret_color.classList.remove('color_secret');
-                player_secret_color.classList.add('color_'+color_id);
+                player_secret_color.classList.add('color_' + color_id);
             },
 
 
@@ -123,11 +128,17 @@ define([
 
                         break;
                    */
+
+                    case 'secretColor':
+                        this.updateSecretColorOnPlayer(args.player_id, args.args._private.secretColor);
+                        break;
+
                     case 'playerTurn':
                         this.possibleMoves = args.args.getPossibleMoves;
                         if (this.isCurrentPlayerActive()) {
                             this.updateSourceTerritories(args.args.getPossibleMoves);
                         }
+                        break;
 
 
                     case 'dummmy':
@@ -277,7 +288,6 @@ define([
                 // if( !this.checkAction( "selectSourceTerritory" ) ) {
                 //     return;
                 // }
-                // debugger;
                 if (!dojo.hasClass(evt.currentTarget.id, 'territory_source')) {
                     // this should not happend to still have the onclick() plugged here :(
                     return;
@@ -290,7 +300,6 @@ define([
 
             onSelectDestinationTerritory: function (evt) {
                 dojo.stopEvent(evt);
-                // debugger;
                 var territory = evt.currentTarget.id.split('_');
                 var dst_territory_id = territory[1];
 
@@ -318,7 +327,6 @@ define([
                 console.log("updateDestinationTerritories");
                 this.src_territory_id = src_territory_id;
                 this.clearTerritoriesClass();
-                // debugger;
                 destinations = this.possibleMoves[src_territory_id];
                 for (var i in destinations) {
                     dst_id = destinations[i];
@@ -361,7 +369,7 @@ define([
                 // this.notifqueue.setSynchronous( 'moveHuts', 3000 );
 
                 dojo.subscribe('villageDispute', this, 'notif_villageDispute');
-                this.notifqueue.setSynchronous('villageDispute', 3000);
+                this.notifqueue.setSynchronous('villageDispute', 500);
 
                 dojo.subscribe('villageBuilt', this, 'notif_villageBuilt');
                 this.notifqueue.setSynchronous('villageBuilt', 3000);
@@ -372,7 +380,7 @@ define([
                 dojo.subscribe('updateScore', this, 'notif_updateScore');
 
                 dojo.subscribe('revealMySecretColor', this, 'notif_revealMySecretColor');
-                // dojo.subscribe('revealAllSecretColors', this, 'notif_revealAllSecretColors');
+                dojo.subscribe('revealAllSecretColors', this, 'notif_revealAllSecretColors');
 
                 //!!!for debug purposes:
                 dojo.subscribe('debug', this, 'notif_debug');

@@ -218,6 +218,11 @@ class ClansByGrivin extends Table
         $sql = "SELECT hut_id, color_id, territory_id FROM hut WHERE territory_id IS NOT NULL ORDER BY territory_id, color_id";
         $result['board'] = self::getObjectListFromDB($sql);
         $result['scores'] = $this->getScores();
+
+        $secret_color_id = $this->getSecretColor($current_player_id);
+        $result['_private'] = array(
+            "current_player_id" => $current_player_id,
+            "secret_color_id" => $secret_color_id);
         return $result;
     }
 
@@ -738,9 +743,13 @@ class ClansByGrivin extends Table
 
     function argSecretColor()
     {
-        return array(
-            'secretColor' => "*secret*"
-//            'secretColor' => $this->getSecsretColor()
+        $player_id = self::getActivePlayerId();
+        $color_id = $this->getSecretColor($player_id);
+        $result = array(
+            '_private' => array(
+                'secretColorFake' => "*secret*",
+                'secretColor' => $color_id,
+            )
         );
     }
 
