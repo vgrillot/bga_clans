@@ -34,19 +34,19 @@ if (!defined('_FOREST')) {
 $this->colors = array(
     1 => array(
         "name" => "yellow",
-        "color" => "00FFFF",
+        "color" => "B8860B", /* from darkgoldenrod */
     ),
     2 => array(
         "name" => "red",
-        "color" => "FF0000",
+        "color" => "8B0000", /* from darkred */
     ),
     3 => array(
         "name" => "green",
-        "color" => "00FF00",
+        "color" => "006400", /* from darkgreen */
     ),
     4 => array(
         "name" => "blue",
-        "color" => "0000FF",
+        "color" => "1e90ff", /* from dodgetblue */
     ),
     5 => array(
         "name" => "black",
