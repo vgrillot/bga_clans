@@ -699,6 +699,9 @@ class ClansByGrivin extends Table
 
     /*
      * revealHiddenColors
+     *
+     * - update final color code in player table
+     * - notify all players
      */
     private function revealAllSecretColors()
     {
@@ -709,8 +712,23 @@ class ClansByGrivin extends Table
         $sql .= 'END';
         self::DbQuery($sql);
 
-        // reload player information to display colors
+//         reload player information to display colors
         self::reloadPlayersBasicInfos();
+
+        // notify all players...
+        $sql = "SELECT player_id, player_name, player_secret_color_id, player_color FROM player ";
+        $qry = self::getCollectionFromDb($sql);
+        foreach ($qry as $p) {
+            self::notifyAllPlayers(
+                'revealAllSecretColors',
+                '${player_name} was playing ${color_name}',
+                array(
+                    'player_name' => $p['player_name'],
+                    'player_color' => $p['player_color'],
+                    'player_id' => $p['player_id'],
+                    'color_name' => $this->colors[$p['player_secret_color_id']]['name'],
+                ));
+        }
     }
 
 
